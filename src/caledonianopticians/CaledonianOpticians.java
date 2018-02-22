@@ -19,7 +19,7 @@ import javafx.geometry.Insets;
  */
 public class CaledonianOpticians extends Application implements EventHandler<ActionEvent>
 {
-    Button btn;
+    Button btnReg;
     Button btnSeach;
     TextField userTextField;
 
@@ -32,22 +32,23 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     @Override
     public void start(Stage primaryStage)
     {
-        btn = new Button();
-        btn.setText("Caledonian Opticians");
-        btn.setOnAction(this);
+        btnReg = new Button();
+        btnReg.setText("Register user");
+        btnReg.setOnAction(this);
         
         btnSeach = new Button();
-        btnSeach.setText("Seach Appointments");
+        btnSeach.setText("Search Appointments");
         btnSeach.setOnAction(this);
         
         userTextField = new TextField();
+        
 
         
         
         GridPane grid = new GridPane();
-        grid.add(btn, 0, 2);
-        grid.add(btnSeach, 0, 1);
-        grid.add(userTextField, 1, 1);
+        grid.add(btnReg, 0, 2);
+        grid.add(btnSeach, 1, 1);
+        grid.add(userTextField, 0, 1);
        
         
         
@@ -70,9 +71,9 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     public void handle(ActionEvent event)
     {
-        if (event.getSource() == btn)
+        if (event.getSource() == btnReg)
         {
-            System.out.println("Test Print");
+            System.out.println("Test Print - Register user");
         }
         
         if (event.getSource() == btnSeach)
