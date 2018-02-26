@@ -2,6 +2,8 @@ package caledonianopticians;
 
 //import java.awt.Insets;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -12,7 +14,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 
 
@@ -27,7 +31,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     Button btnMakeAp;
     TextField txtUserTextField;
     Label lblGcuLogo;
-    TableView tabAppointment;
+    TableView<User> tabUserTable;
 
 
     public static void main(String[] args)
@@ -56,7 +60,28 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         lblGcuLogo.setText("Caledonian Opticians");
         lblGcuLogo.setFont(new Font("Arial", 30));
         
-        tabAppointment = new TableView();
+        
+        
+        //TableView added with 4 columns
+        TableColumn<User, String> colTableFirstName = new TableColumn<>("1st Name");
+        colTableFirstName.setMinWidth(50);
+        colTableFirstName.setCellValueFactory(new PropertyValueFactory<>("srtFirstName"));
+        
+        TableColumn<User, String> colTableLastName = new TableColumn<>("2nd Name");
+        colTableLastName.setMinWidth(50);
+        colTableLastName.setCellValueFactory(new PropertyValueFactory<>("srtLastName"));
+        
+        TableColumn<User, Integer> colTableReference = new TableColumn<>("Reference Number");
+        colTableReference.setMinWidth(50);
+        colTableReference.setCellValueFactory(new PropertyValueFactory<>("intReference"));
+        
+        TableColumn<User, String> colTableAddress = new TableColumn<>("Address");
+        colTableAddress.setMinWidth(200);
+        colTableAddress.setCellValueFactory(new PropertyValueFactory<>("srtAddress"));
+       
+        tabUserTable = new TableView<>();
+        tabUserTable.setItems(getUser());
+        tabUserTable.getColumns().addAll(colTableFirstName, colTableLastName, colTableReference, colTableAddress);
         
         
         
@@ -66,7 +91,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         grid.add(btnSeach, 2, 0);
         grid.add(btnReg, 3, 0);
         grid.add(btnMakeAp, 4, 0);
-        grid.add(tabAppointment, 0, 1);
+        grid.add(tabUserTable, 0, 2);
         
        
         grid.setAlignment(Pos.TOP_LEFT);
@@ -92,6 +117,15 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         {
             System.out.println("Test Print - Search");
         }
+    }
+    
+    public ObservableList<User> getUser()
+    {
+        ObservableList<User> Users = FXCollections.observableArrayList();
+        Users.add(new User("Homer", "Simpson", 100001, "24, new Road"));
+        Users.add(new User("Ned", "Flanders", 100002, "25, new Road"));
+        Users.add(new User("Troy", "McClure", 100003, "26, new Road"));
+        return Users;
     }
     
 }
