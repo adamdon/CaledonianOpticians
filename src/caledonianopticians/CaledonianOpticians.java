@@ -7,10 +7,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.text.Font;
 
 
 /**
@@ -21,9 +23,11 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
 {
     Button btnReg;
     Button btnSeach;
-    TextField userTextField;
+    Button btnMakeAp;
+    TextField txtUserTextField;
+    Label lblGcuLogo;
 
-    
+
     public static void main(String[] args)
     {
         launch(args);
@@ -40,31 +44,33 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         btnSeach.setText("Search Appointments");
         btnSeach.setOnAction(this);
         
-        userTextField = new TextField();
+        btnMakeAp = new Button();
+        btnMakeAp.setText("Make Appointment");
         
-
+        txtUserTextField = new TextField();
+        txtUserTextField.setText("P124564");
+        
+        lblGcuLogo = new Label();
+        lblGcuLogo.setText("Caledonian Opticians");
+        lblGcuLogo.setFont(new Font("Arial", 30));
         
         
         GridPane grid = new GridPane();
-        grid.add(btnReg, 0, 2);
-        grid.add(btnSeach, 1, 1);
-        grid.add(userTextField, 0, 1);
+        grid.add(lblGcuLogo, 0, 0);   
+        grid.add(txtUserTextField, 1, 0);    
+        grid.add(btnSeach, 2, 0);
+        grid.add(btnReg, 3, 0);
+        grid.add(btnMakeAp, 4, 0);
+        
        
-        
-        
-        
-
-        
-        Scene scene = new Scene(grid, 1280, 650);
-        primaryStage.setScene(scene);
-        
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
-        Insets inset = new Insets(25, 25, 25, 25);
+        Insets inset = new Insets(15, 15, 15, 15);
         grid.setPadding(inset);
         
-        
+        Scene scene = new Scene(grid, 1280, 650);
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Caledonian Opticians - Appointments System");
         primaryStage.show();
     }
