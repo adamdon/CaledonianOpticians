@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 
 
@@ -26,6 +27,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     Button btnMakeAp;
     TextField txtUserTextField;
     Label lblGcuLogo;
+    TableView tabAppointment;
 
 
     public static void main(String[] args)
@@ -54,6 +56,9 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         lblGcuLogo.setText("Caledonian Opticians");
         lblGcuLogo.setFont(new Font("Arial", 30));
         
+        tabAppointment = new TableView();
+        
+        
         
         GridPane grid = new GridPane();
         grid.add(lblGcuLogo, 0, 0);   
@@ -61,6 +66,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         grid.add(btnSeach, 2, 0);
         grid.add(btnReg, 3, 0);
         grid.add(btnMakeAp, 4, 0);
+        grid.add(tabAppointment, 0, 1);
         
        
         grid.setAlignment(Pos.TOP_LEFT);
