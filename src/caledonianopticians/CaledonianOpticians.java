@@ -31,7 +31,9 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     Button btnMakeAp;
     TextField txtUserTextField;
     Label lblGcuLogo;
+    
     TableView<User> tabUserTable;
+    TableView<Appointment> tabAppointmentTable;
 
 
     public static void main(String[] args)
@@ -62,7 +64,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         
         
         
-        //TableView added with 4 columns
+        //TableView for users added with 4 columns
         TableColumn<User, String> colTableFirstName = new TableColumn<>("1st Name");
         colTableFirstName.setMinWidth(50);
         colTableFirstName.setCellValueFactory(new PropertyValueFactory<>("srtFirstName"));
@@ -86,6 +88,35 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         
         
         
+        
+        //TableView for appointments added with 5 columns
+        TableColumn<Appointment, Integer> colTableAppointmentRef = new TableColumn<>("Appointment Ref");
+        colTableAppointmentRef.setMinWidth(50);
+        colTableAppointmentRef.setCellValueFactory(new PropertyValueFactory<>("intAppointmentRef"));
+        
+        TableColumn<Appointment, Integer> colTableAttendingPatient = new TableColumn<>("Attending Patient");
+        colTableAttendingPatient.setMinWidth(50);
+        colTableAttendingPatient.setCellValueFactory(new PropertyValueFactory<>("intAttendingPatient"));
+
+        TableColumn<Appointment, String> colTableAttendingOptician = new TableColumn<>("Attending Optician");
+        colTableAttendingOptician.setMinWidth(50);
+        colTableAttendingOptician.setCellValueFactory(new PropertyValueFactory<>("strAttendingOptician"));
+        
+        TableColumn<Appointment, String> colTableAppointmentTime = new TableColumn<>("Appointment Time");
+        colTableAppointmentTime.setMinWidth(50);
+        colTableAppointmentTime.setCellValueFactory(new PropertyValueFactory<>("strAppointmentTime"));        
+        
+        TableColumn<Appointment, String> colTableAppointmentType = new TableColumn<>("Appointment Type");
+        colTableAppointmentType.setMinWidth(50);
+        colTableAppointmentType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));        
+        
+        tabAppointmentTable = new TableView<>();
+        tabAppointmentTable.setItems(getAppointment());
+        tabAppointmentTable.getColumns().addAll(colTableAppointmentRef, colTableAttendingPatient, colTableAttendingOptician, colTableAppointmentTime, colTableAppointmentType);
+        tabAppointmentTable.setMaxHeight(150);
+        
+        
+        
         GridPane grid = new GridPane();
         grid.add(lblGcuLogo, 0, 0);   
         grid.add(txtUserTextField, 1, 0);    
@@ -93,6 +124,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         grid.add(btnReg, 3, 0);
         grid.add(btnMakeAp, 4, 0);
         grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
+        grid.add(tabAppointmentTable, 0, 3, 5, 1); //last 2 paramiters for row/column span
         
        
         grid.setAlignment(Pos.TOP_LEFT);
@@ -131,5 +163,19 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         Users.add(new User("Fat", "Tony", 100006, "29, new Road"));
         return Users;
     }
+    
+    public ObservableList<Appointment> getAppointment()
+    {
+        ObservableList<Appointment> Appointments = FXCollections.observableArrayList();
+        Appointments.add(new Appointment(200001, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes"));
+        Appointments.add(new Appointment(200002, 100004, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes"));
+        Appointments.add(new Appointment(200003, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small"));
+        Appointments.add(new Appointment(200004, 100004, "Dr Julian Bashir", "30.04.18 - 1430", "broken left eye"));
+        Appointments.add(new Appointment(200005, 100004, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye"));
+        Appointments.add(new Appointment(200006, 100004, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye"));
+        Appointments.add(new Appointment(200007, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        return Appointments;
+    }
+    
     
 }
