@@ -82,6 +82,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabUserTable = new TableView<>();
         tabUserTable.setItems(getUser());
         tabUserTable.getColumns().addAll(colTableFirstName, colTableLastName, colTableReference, colTableAddress);
+        tabUserTable.setMaxHeight(150);
         
         
         
@@ -125,6 +126,9 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         Users.add(new User("Homer", "Simpson", 100001, "24, new Road"));
         Users.add(new User("Ned", "Flanders", 100002, "25, new Road"));
         Users.add(new User("Troy", "McClure", 100003, "26, new Road"));
+        Users.add(new User("Ralph", "Wiggum", 100004, "27, new Road"));
+        Users.add(new User("Kent", "Brockman", 100005, "28, new Road"));
+        Users.add(new User("Fat", "Tony", 100006, "29, new Road"));
         return Users;
     }
     
