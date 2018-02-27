@@ -91,7 +91,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         grid.add(btnSeach, 2, 0);
         grid.add(btnReg, 3, 0);
         grid.add(btnMakeAp, 4, 0);
-        grid.add(tabUserTable, 0, 2);
+        grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
         
        
         grid.setAlignment(Pos.TOP_LEFT);
