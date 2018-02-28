@@ -46,7 +46,15 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     Image imgGcuLogo;
     ImageView imvGcuLogo;
 
-
+    TableColumn<User, String> colTableFirstName;
+    TableColumn<User, String> colTableLastName;
+    TableColumn<User, Integer> colTableReference;
+    TableColumn<User, String> colTableAddress;
+    TableColumn<Appointment, Integer> colTableAppointmentRef;
+    TableColumn<Appointment, Integer> colTableAttendingPatient;
+    TableColumn<Appointment, String> colTableAttendingOptician;
+    TableColumn<Appointment, String> colTableAppointmentTime;
+    TableColumn<Appointment, String> colTableAppointmentType;
 
     public static void main(String[] args)
     {
@@ -55,6 +63,33 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     @Override
     public void start(Stage primaryStage)
+    {
+        setupNodes();
+
+        GridPane grid = new GridPane();
+        grid.add(imvGcuLogo, 0, 0);
+        grid.add(lblGcuLogo, 1, 0);   
+        grid.add(txtUserTextField, 2, 0);    
+        grid.add(btnSeach, 3, 0);
+        grid.add(btnReg, 4, 0);
+        grid.add(btnMakeAp, 5, 0);
+        grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
+        grid.add(tabAppointmentTable, 0, 3, 5, 1); //last 2 paramiters for row/column span
+        
+       
+        grid.setAlignment(Pos.TOP_LEFT);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        Insets inset = new Insets(15, 15, 15, 15);
+        grid.setPadding(inset);
+        
+        Scene scene = new Scene(grid, 1280, 650);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Caledonian Opticians - Appointments System");
+        primaryStage.show();
+    }
+    
+    public void setupNodes()
     {
         btnReg = new Button();
         btnReg.setText("Register user");
@@ -82,22 +117,22 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         imvGcuLogo.setImage(imgGcuLogo);
         imvGcuLogo.setFitHeight(56);
         imvGcuLogo.setFitWidth(100);
-
+        
         
         //TableView for users added with 4 columns
-        TableColumn<User, String> colTableFirstName = new TableColumn<>("1st Name");
+        colTableFirstName = new TableColumn<>("1st Name");
         colTableFirstName.setMinWidth(50);
         colTableFirstName.setCellValueFactory(new PropertyValueFactory<>("srtFirstName"));
         
-        TableColumn<User, String> colTableLastName = new TableColumn<>("2nd Name");
+        colTableLastName = new TableColumn<>("2nd Name");
         colTableLastName.setMinWidth(50);
         colTableLastName.setCellValueFactory(new PropertyValueFactory<>("srtLastName"));
         
-        TableColumn<User, Integer> colTableReference = new TableColumn<>("Reference Number");
+        colTableReference = new TableColumn<>("Reference Number");
         colTableReference.setMinWidth(50);
         colTableReference.setCellValueFactory(new PropertyValueFactory<>("intReference"));
         
-        TableColumn<User, String> colTableAddress = new TableColumn<>("Address");
+        colTableAddress = new TableColumn<>("Address");
         colTableAddress.setMinWidth(200);
         colTableAddress.setCellValueFactory(new PropertyValueFactory<>("srtAddress"));
        
@@ -107,26 +142,24 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabUserTable.setMaxHeight(150);
         
         
-        
-        
         //TableView for appointments added with 5 columns
-        TableColumn<Appointment, Integer> colTableAppointmentRef = new TableColumn<>("Appointment Ref");
+        colTableAppointmentRef = new TableColumn<>("Appointment Ref");
         colTableAppointmentRef.setMinWidth(50);
         colTableAppointmentRef.setCellValueFactory(new PropertyValueFactory<>("intAppointmentRef"));
         
-        TableColumn<Appointment, Integer> colTableAttendingPatient = new TableColumn<>("Attending Patient");
+        colTableAttendingPatient = new TableColumn<>("Attending Patient");
         colTableAttendingPatient.setMinWidth(50);
         colTableAttendingPatient.setCellValueFactory(new PropertyValueFactory<>("intAttendingPatient"));
 
-        TableColumn<Appointment, String> colTableAttendingOptician = new TableColumn<>("Attending Optician");
+        colTableAttendingOptician = new TableColumn<>("Attending Optician");
         colTableAttendingOptician.setMinWidth(50);
         colTableAttendingOptician.setCellValueFactory(new PropertyValueFactory<>("strAttendingOptician"));
         
-        TableColumn<Appointment, String> colTableAppointmentTime = new TableColumn<>("Appointment Time");
+        colTableAppointmentTime = new TableColumn<>("Appointment Time");
         colTableAppointmentTime.setMinWidth(50);
         colTableAppointmentTime.setCellValueFactory(new PropertyValueFactory<>("strAppointmentTime"));        
         
-        TableColumn<Appointment, String> colTableAppointmentType = new TableColumn<>("Appointment Type");
+        colTableAppointmentType = new TableColumn<>("Appointment Type");
         colTableAppointmentType.setMinWidth(50);
         colTableAppointmentType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));        
         
@@ -134,31 +167,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabAppointmentTable.setItems(getAppointment());
         tabAppointmentTable.getColumns().addAll(colTableAppointmentRef, colTableAttendingPatient, colTableAttendingOptician, colTableAppointmentTime, colTableAppointmentType);
         tabAppointmentTable.setMaxHeight(150);
-        
-        
-        
-        GridPane grid = new GridPane();
-        grid.add(imvGcuLogo, 0, 0);
-        grid.add(lblGcuLogo, 1, 0);   
-        grid.add(txtUserTextField, 2, 0);    
-        grid.add(btnSeach, 3, 0);
-        grid.add(btnReg, 4, 0);
-        grid.add(btnMakeAp, 5, 0);
-        grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
-        grid.add(tabAppointmentTable, 0, 3, 5, 1); //last 2 paramiters for row/column span
-        
-       
-        grid.setAlignment(Pos.TOP_LEFT);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        Insets inset = new Insets(15, 15, 15, 15);
-        grid.setPadding(inset);
-        
-        Scene scene = new Scene(grid, 1280, 650);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Caledonian Opticians - Appointments System");
-        primaryStage.show();
     }
+    
     
     public void handle(ActionEvent event)
     {
