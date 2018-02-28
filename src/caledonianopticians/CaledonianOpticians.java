@@ -1,6 +1,5 @@
 package caledonianopticians;
 
-//import java.awt.Insets;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -26,13 +25,14 @@ import javafx.scene.image.Image;
 
 import javafx.scene.text.Font;
 
-
 /**
  *
  * @author adamdon <adamdon89@gmail.com>
  */
 public class CaledonianOpticians extends Application implements EventHandler<ActionEvent>
 {
+    GridPane grid;
+    
     Button btnReg;
     Button btnSeach;
     Button btnMakeAp;
@@ -65,8 +65,17 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     public void start(Stage primaryStage)
     {
         setupNodes();
+        setupLayout();
 
-        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 1280, 650);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Caledonian Opticians - Appointments System");
+        primaryStage.show();
+    }
+    
+    public void setupLayout()
+    {
+        grid = new GridPane();
         grid.add(imvGcuLogo, 0, 0);
         grid.add(lblGcuLogo, 1, 0);   
         grid.add(txtUserTextField, 2, 0);    
@@ -82,11 +91,6 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         grid.setVgap(10);
         Insets inset = new Insets(15, 15, 15, 15);
         grid.setPadding(inset);
-        
-        Scene scene = new Scene(grid, 1280, 650);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Caledonian Opticians - Appointments System");
-        primaryStage.show();
     }
     
     public void setupNodes()
@@ -139,7 +143,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabUserTable = new TableView<>();
         tabUserTable.setItems(getUser());
         tabUserTable.getColumns().addAll(colTableFirstName, colTableLastName, colTableReference, colTableAddress);
-        tabUserTable.setMaxHeight(150);
+        tabUserTable.setMaxSize(640, 220);
+        tabUserTable.setMinSize(640, 220);
         
         
         //TableView for appointments added with 5 columns
@@ -166,7 +171,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabAppointmentTable = new TableView<>();
         tabAppointmentTable.setItems(getAppointment());
         tabAppointmentTable.getColumns().addAll(colTableAppointmentRef, colTableAttendingPatient, colTableAttendingOptician, colTableAppointmentTime, colTableAppointmentType);
-        tabAppointmentTable.setMaxHeight(150);
+        tabAppointmentTable.setMaxSize(640, 220);
+        tabAppointmentTable.setMinSize(640, 220);
     }
     
     
