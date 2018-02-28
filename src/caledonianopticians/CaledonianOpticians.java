@@ -1,6 +1,10 @@
 package caledonianopticians;
 
 //import java.awt.Insets;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +21,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+
 import javafx.scene.text.Font;
 
 
@@ -34,6 +41,11 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     TableView<User> tabUserTable;
     TableView<Appointment> tabAppointmentTable;
+
+    FileInputStream fisImageStream;    
+    Image imgGcuLogo;
+    ImageView imvGcuLogo;
+
 
 
     public static void main(String[] args)
@@ -62,7 +74,15 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         lblGcuLogo.setText("Caledonian Opticians");
         lblGcuLogo.setFont(new Font("Arial", 30));
         
-        
+        //imageView code for GCU logo
+        try {fisImageStream = new FileInputStream("img/gculogo.png");}
+        catch (FileNotFoundException ex) {Logger.getLogger(CaledonianOpticians.class.getName()).log(Level.SEVERE, null, ex);}
+        imgGcuLogo = new Image(fisImageStream);
+        imvGcuLogo = new ImageView();
+        imvGcuLogo.setImage(imgGcuLogo);
+        imvGcuLogo.setFitHeight(56);
+        imvGcuLogo.setFitWidth(100);
+
         
         //TableView for users added with 4 columns
         TableColumn<User, String> colTableFirstName = new TableColumn<>("1st Name");
@@ -118,11 +138,12 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         
         
         GridPane grid = new GridPane();
-        grid.add(lblGcuLogo, 0, 0);   
-        grid.add(txtUserTextField, 1, 0);    
-        grid.add(btnSeach, 2, 0);
-        grid.add(btnReg, 3, 0);
-        grid.add(btnMakeAp, 4, 0);
+        grid.add(imvGcuLogo, 0, 0);
+        grid.add(lblGcuLogo, 1, 0);   
+        grid.add(txtUserTextField, 2, 0);    
+        grid.add(btnSeach, 3, 0);
+        grid.add(btnReg, 4, 0);
+        grid.add(btnMakeAp, 5, 0);
         grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
         grid.add(tabAppointmentTable, 0, 3, 5, 1); //last 2 paramiters for row/column span
         
