@@ -31,8 +31,11 @@ import javafx.scene.text.Font;
  */
 public class CaledonianOpticians extends Application implements EventHandler<ActionEvent>
 {
-    GridPane grid;
-    
+    GridPane gridRoot;
+    GridPane gridTop;
+    GridPane gridLeft;
+    GridPane gridRight;
+                   
     Button btnReg;
     Button btnSeach;
     Button btnMakeAp;
@@ -67,7 +70,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         setupNodes();
         setupLayout();
 
-        Scene scene = new Scene(grid, 1280, 650);
+        Scene scene = new Scene(gridRoot, 1280, 650);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Caledonian Opticians - Appointments System");
         primaryStage.show();
@@ -75,22 +78,55 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     public void setupLayout()
     {
-        grid = new GridPane();
-        grid.add(imvGcuLogo, 0, 0);
-        grid.add(lblGcuLogo, 1, 0);   
-        grid.add(txtUserTextField, 2, 0);    
-        grid.add(btnSeach, 3, 0);
-        grid.add(btnReg, 4, 0);
-        grid.add(btnMakeAp, 5, 0);
-        grid.add(tabUserTable, 0, 2, 5, 1); //last 2 paramiters for row/column span
-        grid.add(tabAppointmentTable, 0, 3, 5, 1); //last 2 paramiters for row/column span
+        gridTop = new GridPane();
+        gridTop.setAlignment(Pos.TOP_LEFT);
+        gridTop.setHgap(5);
+        gridTop.setVgap(5);
+        gridTop.setPadding(new Insets(10, 10, 0, 10)); //bottom padding set to 0 
+                
+        gridTop.add(imvGcuLogo, 0, 0);
+        gridTop.add(lblGcuLogo, 1, 0);   
+        gridTop.add(txtUserTextField, 2, 0);    
+        gridTop.add(btnSeach, 3, 0);
+        gridTop.add(btnReg, 4, 0);
+        gridTop.add(btnMakeAp, 5, 0);
         
-       
-        grid.setAlignment(Pos.TOP_LEFT);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        Insets inset = new Insets(15, 15, 15, 15);
-        grid.setPadding(inset);
+        
+        gridLeft = new GridPane();
+        gridLeft.setAlignment(Pos.TOP_LEFT);
+        gridLeft.setHgap(5);
+        gridLeft.setVgap(5);
+        gridLeft.setPadding(new Insets(0, 0, 10, 10)); //top and right padding set to 0 
+        
+        gridLeft.add(tabUserTable, 0, 0); //can add 2 paramiters for row/column span
+        gridLeft.add(tabAppointmentTable, 0, 1); //can 2 paramiters for row/column span        
+        
+        
+        
+        gridRight = new GridPane();
+        gridRight.setAlignment(Pos.TOP_LEFT);
+        gridRight.setHgap(5);
+        gridRight.setVgap(5);
+        gridRight.setPadding(new Insets(0, 10, 10, 0)); //top and left padding set to 0 
+        
+        gridRight.add(btnReg, 0, 0);
+        
+        
+        
+        gridRoot = new GridPane();
+        gridRoot.setAlignment(Pos.TOP_LEFT);
+        gridRoot.setHgap(10);
+        gridRoot.setVgap(10);
+        gridRoot.setPadding(new Insets(10, 10, 10, 10));
+        
+        gridRoot.setConstraints(gridTop, 0, 0, 2, 1);
+        gridRoot.setConstraints(gridLeft, 0, 1);
+        gridRoot.setConstraints(gridRight, 1, 1);
+        gridRoot.getChildren().add(gridTop);
+        gridRoot.getChildren().add(gridLeft);
+        gridRoot.getChildren().add(gridRight);
+        gridRoot.gridLinesVisibleProperty();
+
     }
     
     public void setupNodes()
@@ -143,8 +179,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabUserTable = new TableView<>();
         tabUserTable.setItems(getUser());
         tabUserTable.getColumns().addAll(colTableFirstName, colTableLastName, colTableReference, colTableAddress);
-        tabUserTable.setMaxSize(640, 220);
-        tabUserTable.setMinSize(640, 220);
+        tabUserTable.setMaxSize(580, 250);
+        tabUserTable.setMinSize(580, 250);
         
         
         //TableView for appointments added with 5 columns
@@ -171,8 +207,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabAppointmentTable = new TableView<>();
         tabAppointmentTable.setItems(getAppointment());
         tabAppointmentTable.getColumns().addAll(colTableAppointmentRef, colTableAttendingPatient, colTableAttendingOptician, colTableAppointmentTime, colTableAppointmentType);
-        tabAppointmentTable.setMaxSize(640, 220);
-        tabAppointmentTable.setMinSize(640, 220);
+        tabAppointmentTable.setMaxSize(580, 250);
+        tabAppointmentTable.setMinSize(580, 250);
     }
     
     
@@ -198,6 +234,14 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         Users.add(new User("Ralph", "Wiggum", 100004, "27, new Road"));
         Users.add(new User("Kent", "Brockman", 100005, "28, new Road"));
         Users.add(new User("Fat", "Tony", 100006, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100007, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100008, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100009, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100010, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100011, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100012, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100013, "29, new Road"));
+        Users.add(new User("Fat", "Tony", 100014, "29, new Road"));
         return Users;
     }
     
@@ -211,6 +255,13 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         Appointments.add(new Appointment(200005, 100004, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye"));
         Appointments.add(new Appointment(200006, 100004, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye"));
         Appointments.add(new Appointment(200007, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200008, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200009, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200010, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200011, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200012, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200013, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         return Appointments;
     }
     
