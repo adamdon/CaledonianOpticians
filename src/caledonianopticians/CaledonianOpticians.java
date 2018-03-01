@@ -36,11 +36,21 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     GridPane gridLeft;
     GridPane gridRight;
                    
-    Button btnReg;
+    Button btnRegUser;
+    Button btnModifyUser;
     Button btnSeach;
     Button btnMakeAp;
-    TextField txtUserTextField;
+    TextField txtSeachTextField;
+    TextField txtUserFirstName;
+    TextField txtUserLastName;
+    TextField txtUserRefNumber;
+    TextField txtUserAddress;
     Label lblGcuLogo;
+    Label lblUserFirstName;
+    Label lblUserLastName;
+    Label lblUserRefNumber;
+    Label lblUserAddress;
+    
     
     TableView<User> tabUserTable;
     TableView<Appointment> tabAppointmentTable;
@@ -86,10 +96,10 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
                 
         gridTop.add(imvGcuLogo, 0, 0);
         gridTop.add(lblGcuLogo, 1, 0);   
-        gridTop.add(txtUserTextField, 2, 0);    
+        gridTop.add(txtSeachTextField, 2, 0);    
         gridTop.add(btnSeach, 3, 0);
-        gridTop.add(btnReg, 4, 0);
-        gridTop.add(btnMakeAp, 5, 0);
+        gridTop.add(btnMakeAp, 4, 0);
+        
         
         
         gridLeft = new GridPane();
@@ -109,7 +119,16 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         gridRight.setVgap(5);
         gridRight.setPadding(new Insets(0, 10, 10, 0)); //top and left padding set to 0 
         
-        gridRight.add(btnReg, 0, 0);
+        gridRight.add(lblUserFirstName, 0, 0);
+        gridRight.add(lblUserLastName, 0, 1);
+        gridRight.add(lblUserRefNumber, 0, 2);
+        gridRight.add(lblUserAddress, 0, 3);
+        gridRight.add(txtUserFirstName, 1, 0);
+        gridRight.add(txtUserLastName, 1, 1);
+        gridRight.add(txtUserRefNumber, 1, 2);
+        gridRight.add(txtUserAddress, 1, 3);
+        gridRight.add(btnRegUser, 0, 4);
+        gridRight.add(btnModifyUser, 1, 4);
         
         
         
@@ -125,15 +144,16 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         gridRoot.getChildren().add(gridTop);
         gridRoot.getChildren().add(gridLeft);
         gridRoot.getChildren().add(gridRight);
-        gridRoot.gridLinesVisibleProperty();
-
     }
     
     public void setupNodes()
     {
-        btnReg = new Button();
-        btnReg.setText("Register user");
-        btnReg.setOnAction(this);
+        btnRegUser = new Button();
+        btnRegUser.setText("Register new user");
+        btnRegUser.setOnAction(this);
+        
+        btnModifyUser = new Button();
+        btnModifyUser.setText("Modify user");
         
         btnSeach = new Button();
         btnSeach.setText("Search Appointments");
@@ -142,12 +162,22 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         btnMakeAp = new Button();
         btnMakeAp.setText("Make Appointment");
         
-        txtUserTextField = new TextField();
-        txtUserTextField.setText("P124564");
+        txtSeachTextField = new TextField();
+        txtSeachTextField.setText("P124564");
+        
+        txtUserFirstName = new TextField("Homer ");
+        txtUserLastName = new TextField("Simpson ");
+        txtUserRefNumber = new TextField("10001 ");
+        txtUserAddress = new TextField("24 New Road ");
         
         lblGcuLogo = new Label();
         lblGcuLogo.setText("Caledonian Opticians");
         lblGcuLogo.setFont(new Font("Arial", 30));
+        
+        lblUserFirstName = new Label("First Name:");
+        lblUserLastName = new Label("Last Name:");
+        lblUserRefNumber = new Label("Ref Number:");
+        lblUserAddress = new Label("Address:") ;       
         
         //imageView code for GCU logo
         try {fisImageStream = new FileInputStream("img/gculogo.png");}
@@ -214,7 +244,7 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     public void handle(ActionEvent event)
     {
-        if (event.getSource() == btnReg)
+        if (event.getSource() == btnRegUser)
         {
             System.out.println("Test Print - Register user");
         }
