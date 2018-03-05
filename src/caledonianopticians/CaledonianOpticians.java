@@ -36,8 +36,10 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     GridPane gridLeft;
     GridPane gridRight;
                    
-    Button btnRegUser;
-    Button btnModifyUser;
+    Button btnUserNew;
+    Button btnUserModify;
+    Button btnAppointmentNew;
+    Button btnAppointmentModify;
     Button btnSeach;
     Button btnMakeAp;
     TextField txtSeachTextField;
@@ -45,12 +47,22 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     TextField txtUserLastName;
     TextField txtUserRefNumber;
     TextField txtUserAddress;
+    TextField txtAppointmentRef;
+    TextField txtApointmentUserRef;
+    TextField txtAppointmentOptician;
+    TextField txtAppointmentTime;
+    TextField txtAppointmentType;
     Label lblGcuLogo;
     Label lblUserFirstName;
     Label lblUserLastName;
     Label lblUserRefNumber;
     Label lblUserAddress;
-    
+    Label lblAppointmentRef;
+    Label lblAppointmentUserRef;
+    Label lblAppointmentOptician;
+    Label lblAppointmentTime;
+    Label lblAppointmentType;
+    Label lblSpacerBlank;
     
     TableView<User> tabUserTable;
     TableView<Appointment> tabAppointmentTable;
@@ -127,10 +139,23 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         gridRight.add(txtUserLastName, 1, 1);
         gridRight.add(txtUserRefNumber, 1, 2);
         gridRight.add(txtUserAddress, 1, 3);
-        gridRight.add(btnRegUser, 0, 4);
-        gridRight.add(btnModifyUser, 1, 4);
+        gridRight.add(btnUserNew, 0, 4);
+        gridRight.add(btnUserModify, 1, 4);
         
-        
+        gridRight.add(lblSpacerBlank, 0, 5);
+        //spacing will be added when finishing
+        gridRight.add(lblAppointmentRef, 0, 6);
+        gridRight.add(lblAppointmentUserRef, 0, 7);
+        gridRight.add(lblAppointmentOptician, 0, 8);
+        gridRight.add(lblAppointmentTime, 0, 9);
+        gridRight.add(lblAppointmentType, 0, 10);
+        gridRight.add(txtAppointmentRef, 1, 6);
+        gridRight.add(txtApointmentUserRef, 1, 7);
+        gridRight.add(txtAppointmentOptician, 1, 8);       
+        gridRight.add(txtAppointmentTime, 1, 9);
+        gridRight.add(txtAppointmentType, 1, 10);    
+        gridRight.add(btnAppointmentNew, 0, 11); 
+        gridRight.add(btnAppointmentModify, 1, 11); 
         
         gridRoot = new GridPane();
         gridRoot.setAlignment(Pos.TOP_LEFT);
@@ -148,12 +173,18 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
     
     public void setupNodes()
     {
-        btnRegUser = new Button();
-        btnRegUser.setText("Register new user");
-        btnRegUser.setOnAction(this);
+        btnUserNew = new Button();
+        btnUserNew.setText("Register User");
+        btnUserNew.setOnAction(this);
         
-        btnModifyUser = new Button();
-        btnModifyUser.setText("Modify user");
+        btnUserModify = new Button();
+        btnUserModify.setText("Modify user");
+        
+        btnAppointmentNew  = new Button();
+        btnAppointmentNew.setText("Register Appointment");
+       
+        btnAppointmentModify = new Button();
+        btnAppointmentModify.setText("Modify Appointment");
         
         btnSeach = new Button();
         btnSeach.setText("Search Appointments");
@@ -170,6 +201,12 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         txtUserRefNumber = new TextField("10001 ");
         txtUserAddress = new TextField("24 New Road ");
         
+        txtAppointmentRef = new TextField("200001 ");
+        txtApointmentUserRef = new TextField("100004 ");
+        txtAppointmentOptician = new TextField("Dr Leonard McCoy ");
+        txtAppointmentTime = new TextField("30.04.18 - 1430 ");
+        txtAppointmentType = new TextField("sore eyes ");
+        
         lblGcuLogo = new Label();
         lblGcuLogo.setText("Caledonian Opticians");
         lblGcuLogo.setFont(new Font("Arial", 30));
@@ -177,7 +214,16 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         lblUserFirstName = new Label("First Name:");
         lblUserLastName = new Label("Last Name:");
         lblUserRefNumber = new Label("Ref Number:");
-        lblUserAddress = new Label("Address:") ;       
+        lblUserAddress = new Label("Address:") ;   
+        
+        lblAppointmentRef = new Label("Appointment Ref:");
+        lblAppointmentUserRef = new Label("Attending Patient:");
+        lblAppointmentOptician = new Label("Attending Optician:");
+        lblAppointmentTime = new Label("Appointment Time:");
+        lblAppointmentType = new Label("Appointment Type:");
+        
+        lblSpacerBlank = new Label(" ");
+        lblSpacerBlank.setMinHeight(100);
         
         //imageView code for GCU logo
         try {fisImageStream = new FileInputStream("img/gculogo.png");}
@@ -209,8 +255,8 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabUserTable = new TableView<>();
         tabUserTable.setItems(getUser());
         tabUserTable.getColumns().addAll(colTableFirstName, colTableLastName, colTableReference, colTableAddress);
-        tabUserTable.setMaxSize(580, 250);
-        tabUserTable.setMinSize(580, 250);
+        tabUserTable.setMaxSize(850, 250);
+        tabUserTable.setMinSize(850, 250);
         
         
         //TableView for appointments added with 5 columns
@@ -237,14 +283,14 @@ public class CaledonianOpticians extends Application implements EventHandler<Act
         tabAppointmentTable = new TableView<>();
         tabAppointmentTable.setItems(getAppointment());
         tabAppointmentTable.getColumns().addAll(colTableAppointmentRef, colTableAttendingPatient, colTableAttendingOptician, colTableAppointmentTime, colTableAppointmentType);
-        tabAppointmentTable.setMaxSize(580, 250);
-        tabAppointmentTable.setMinSize(580, 250);
+        tabAppointmentTable.setMaxSize(850, 250);
+        tabAppointmentTable.setMinSize(850, 250);
     }
     
     
     public void handle(ActionEvent event)
     {
-        if (event.getSource() == btnRegUser)
+        if (event.getSource() == btnUserNew)
         {
             System.out.println("Test Print - Register user");
         }
