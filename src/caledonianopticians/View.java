@@ -27,8 +27,10 @@ import javafx.scene.text.Font;
  *
  * @author admin
  */
-public class InterfaceView 
+public class View
 {
+    Scene scene;
+    
     GridPane gridRoot;
     GridPane gridTop;
     GridPane gridLeft;
@@ -38,9 +40,9 @@ public class InterfaceView
     Button btnUserModify;
     Button btnAppointmentNew;
     Button btnAppointmentModify;
-    Button btnSeach;
+    Button btnSearch;
     Button btnMakeAp;
-    TextField txtSeachTextField;
+    TextField txtSearchTextField;
     TextField txtUserFirstName;
     TextField txtUserLastName;
     TextField txtUserRefNumber;
@@ -84,26 +86,23 @@ public class InterfaceView
     TableColumn<Appointment, String> colTableAppointmentTime;
     TableColumn<Appointment, String> colTableAppointmentType;
     
-    public InterfaceView()
-    {
-        int test = 0;
-    }
-
-    public Scene populateScene()
+    public View()
     {
         setupNodes();
-        setupLayout();
-        Scene scene = new Scene(gridRoot, 1280, 650);
-        
+        setupLayout();   
+        scene = new Scene(gridRoot, 1280, 650);
+    }
+
+    public Scene getScene()
+    {       
         return scene;
     }
-    
-        public void setupNodes()
+      
+    public void setupNodes()
     {
         btnUserNew = new Button();
         btnUserNew.setText("Register User");
-        //btnUserNew.setOnAction(this);
-        
+ 
         btnUserModify = new Button();
         btnUserModify.setText("Modify user");
         
@@ -113,15 +112,14 @@ public class InterfaceView
         btnAppointmentModify = new Button();
         btnAppointmentModify.setText("Modify Appointment");
         
-        btnSeach = new Button();
-        btnSeach.setText("Search");
-        //btnSeach.setOnAction(this);
-        
+        btnSearch = new Button();
+        btnSearch.setText("Search");
+                
         btnMakeAp = new Button();
         btnMakeAp.setText("Make Appointment");
         
-        txtSeachTextField = new TextField();
-        txtSeachTextField.setText("P124564");
+        txtSearchTextField = new TextField();
+        txtSearchTextField.setText("P124564");
         
         txtUserFirstName = new TextField("Homer ");
         txtUserLastName = new TextField("Simpson ");
@@ -234,8 +232,8 @@ public class InterfaceView
         gridTop.setPadding(new Insets(1, 10, 0, 10)); //bottom padding set to 0 
                 
         gridTop.add(lblGcuLogo, 0, 0);   
-        gridTop.add(txtSeachTextField, 1, 0);    
-        gridTop.add(btnSeach, 2, 0);
+        gridTop.add(txtSearchTextField, 1, 0);    
+        gridTop.add(btnSearch, 2, 0);
         gridTop.add(lblSpacerBlankW, 3, 0);
         gridTop.add(imvGcuLogo, 4, 0);
         
@@ -304,7 +302,7 @@ public class InterfaceView
         gridRoot.getChildren().add(gridRight);
     }
     
-        public ObservableList<User> getUser()
+    public ObservableList<User> getUser()
     {
         ObservableList<User> Users = FXCollections.observableArrayList();
         Users.add(new User("Homer", "Simpson", 100001, "24, new Road"));
