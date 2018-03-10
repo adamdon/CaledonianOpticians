@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 public class Controller
 {
     View view;
+    ObservableList<User> Users;
+    ObservableList<Appointment> Appointments;
 
     public Controller() 
     {
@@ -19,6 +21,7 @@ public class Controller
     public void handleBtnSearch()
     {
         updateStatusBar(view.txtSearchTextField.getText());
+        searchUsers(view.txtSearchTextField.getText());
     }
     
     public void  updateStatusBar(String srtPassedText)
@@ -27,9 +30,22 @@ public class Controller
         System.out.println("Status bar updated with " + srtPassedText);
     }
     
+    public void searchUsers(String srtPassedText)
+    {
+        ObservableList<User> SearchedUsers = FXCollections.observableArrayList();
+        for(User identifier: Users)
+        {
+            if(identifier.getSrtFirstName().equals(srtPassedText))
+            {
+                SearchedUsers.add(identifier);
+            }
+        }
+        view.tabUserTable.setItems(SearchedUsers);
+    }
+    
     public ObservableList<User> getUser()
     {
-        ObservableList<User> Users = FXCollections.observableArrayList();
+        Users = FXCollections.observableArrayList();
         Users.add(new User("Homer", "Simpson", 100001, "24, new Road"));
         Users.add(new User("Ned", "Flanders", 100002, "25, new Road"));
         Users.add(new User("Troy", "McClure", 100003, "26, new Road"));
@@ -47,9 +63,9 @@ public class Controller
         return Users;
     }
     
-        public ObservableList<Appointment> getAppointment()
+    public ObservableList<Appointment> getAppointment()
     {
-        ObservableList<Appointment> Appointments = FXCollections.observableArrayList();
+        Appointments = FXCollections.observableArrayList();
         Appointments.add(new Appointment(200001, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes"));
         Appointments.add(new Appointment(200002, 100004, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes"));
         Appointments.add(new Appointment(200003, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small"));
