@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class Controller
 {
@@ -16,6 +18,7 @@ public class Controller
     {
        view = new View(getUser(), getAppointment());
        view.btnSearch.setOnAction(e -> handleBtnSearch());
+       view.txtSearchTextField.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) { handleBtnSearch(); } });
     }
     
     public void handleBtnSearch()
@@ -33,14 +36,40 @@ public class Controller
     public void searchUsers(String srtPassedText)
     {
         ObservableList<User> SearchedUsers = FXCollections.observableArrayList();
-        for(User identifier: Users)
+        
+        if(srtPassedText.equals("") || srtPassedText.equals(" "))
         {
-            if(identifier.getSrtFirstName().equals(srtPassedText))
-            {
-                SearchedUsers.add(identifier);
-            }
+            SearchedUsers = Users;
         }
+        else
+        {
+            updateStatusBar("Searching for " + srtPassedText);
+            for(User identifier: Users)
+            {
+                String strFullName = identifier.getSrtFirstName() + " " + identifier.getSrtLastName();
+                Integer ingIntergerRef = identifier.getIntReference(); // changing primitive data type int to Interger
+
+                if(identifier.getSrtFirstName().equalsIgnoreCase(srtPassedText))
+                {
+                    SearchedUsers.add(identifier);
+                }
+                else if(identifier.getSrtLastName().equalsIgnoreCase(srtPassedText))
+                {
+                    SearchedUsers.add(identifier);
+                }
+                else if (strFullName.equalsIgnoreCase(srtPassedText))
+                {
+                    SearchedUsers.add(identifier);
+                }
+                else if (ingIntergerRef.toString().equals(srtPassedText))
+                {
+                    SearchedUsers.add(identifier);
+                }
+            } // end of for loop
+
+        } //end of else 
         view.tabUserTable.setItems(SearchedUsers);
+        view.txtSearchTextField.selectAll();
     }
     
     public ObservableList<User> getUser()
