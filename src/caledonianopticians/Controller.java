@@ -17,8 +17,11 @@ public class Controller
     public Controller() 
     {
        view = new View(getUser(), getAppointment());
+       
        view.btnSearch.setOnAction(e -> handleBtnSearch());
        view.txtSearchTextField.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) { handleBtnSearch(); } });
+       //view.tabUserTable.setOnMouseClicked(e -> searchAppointments());
+       view.tabUserTable.getSelectionModel().selectedIndexProperty().addListener((num) -> searchAppointments());
     }
     
     public void handleBtnSearch()
@@ -31,6 +34,26 @@ public class Controller
     {
         view.lblStatusBarText.setText("Test: " + srtPassedText);
         System.out.println("Status bar updated with " + srtPassedText);
+    }
+    
+    public void searchAppointments()
+    {
+        int intUserindex = view.tabUserTable.getSelectionModel().selectedIndexProperty().get();
+        Integer intUserRefSelected = Users.get(intUserindex).getIntReference();
+        
+        ObservableList<Appointment> SearchedAppointments = FXCollections.observableArrayList();
+        
+        for(Appointment identifier: Appointments)
+        {
+            Integer ingAppointmentPatient = identifier.getIntAttendingPatient();
+            
+            if(ingAppointmentPatient.equals(intUserRefSelected))
+            {
+                SearchedAppointments.add(identifier);
+            }
+        }
+        view.tabAppointmentTable.setItems(SearchedAppointments);       
+        
     }
     
     public void searchUsers(String srtPassedText)
@@ -95,19 +118,19 @@ public class Controller
     public ObservableList<Appointment> getAppointment()
     {
         Appointments = FXCollections.observableArrayList();
-        Appointments.add(new Appointment(200001, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes"));
-        Appointments.add(new Appointment(200002, 100004, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes"));
-        Appointments.add(new Appointment(200003, 100004, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small"));
+        Appointments.add(new Appointment(200001, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes"));
+        Appointments.add(new Appointment(200002, 100002, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes"));
+        Appointments.add(new Appointment(200003, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small"));
         Appointments.add(new Appointment(200004, 100004, "Dr Julian Bashir", "30.04.18 - 1430", "broken left eye"));
-        Appointments.add(new Appointment(200005, 100004, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye"));
-        Appointments.add(new Appointment(200006, 100004, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye"));
-        Appointments.add(new Appointment(200007, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200005, 100005, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye"));
+        Appointments.add(new Appointment(200006, 100005, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye"));
+        Appointments.add(new Appointment(200007, 100005, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         Appointments.add(new Appointment(200008, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        Appointments.add(new Appointment(200009, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        Appointments.add(new Appointment(200010, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200009, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200010, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         Appointments.add(new Appointment(200011, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        Appointments.add(new Appointment(200012, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        Appointments.add(new Appointment(200013, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200012, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        Appointments.add(new Appointment(200013, 100009, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         Appointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         return Appointments;
     }
