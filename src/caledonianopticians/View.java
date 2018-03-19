@@ -89,11 +89,8 @@ public class View
     TableColumn<Appointment, String> colTableAppointmentTime;
     TableColumn<Appointment, String> colTableAppointmentType;
     
-    public View(ObservableList<User> Users, ObservableList<Appointment> Appointments)
-    {
-        this.Users = Users;
-        this.Appointments = Appointments;
-        
+    public View()
+    {       
         setupNodes();
         setupLayout();   
         scene = new Scene(gridRoot, 1280, 650);
