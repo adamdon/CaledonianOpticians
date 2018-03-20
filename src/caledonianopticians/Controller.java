@@ -12,10 +12,8 @@ public class Controller
 {
     View view;
     ObservableList<User> allUsers;
-    ObservableList<User> searchedUsers;
     ObservableList<User> displayedUsers;
     ObservableList<Appointment> allAppointments;
-    ObservableList<Appointment> SearchedAppointments;
     ObservableList<Appointment> displayedAppointments;
 
     public Controller() 
@@ -30,22 +28,81 @@ public class Controller
        view.btnSearch.setOnAction(e -> handleBtnSearch());
        view.txtSearchTextField.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) { handleBtnSearch(); } });
        view.tabUserTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionUserTable());
+       view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionUserTable());
+       
     }
     
     public void handleBtnSearch()
     {
-        updateStatusBar(view.txtSearchTextField.getText());
-        searchUsers(view.txtSearchTextField.getText());
+        
+        searchUsersValidator(view.txtSearchTextField.getText());
     }
     
     public void handleListenerSelectionUserTable()
     {    
         searchAppointments(getUserTableSelection());
+        populateUserDetails(getUserTableSelection());
     }
+    
+    public void handleListenerSelectionAppointmentTable()
+    {    
+        populateUserDetails(getAppointmentTableSelection());
+    }
+    
+    
+    public void searchUsersValidator(String srtPassedSearchTextField)
+    {
+        ObservableList<User> validatedSearchedUsers = searchUsersAlgorithm(srtPassedSearchTextField);
+        
+        if(srtPassedSearchTextField.equals("") || validatedSearchedUsers.isEmpty())
+        {
+            updateUsersTable(allUsers);
+            updateAppointmentsTable(allAppointments);
+            clearUserDetails();
+            view.txtSearchTextField.selectAll();
+            updateStatusBar("No results found for " + srtPassedSearchTextField + "All users displayed");
+        }
+        else
+        {
+            updateUsersTable(searchUsersAlgorithm(srtPassedSearchTextField));
+            populateUserDetails(getUserTableSelection());
+            view.txtSearchTextField.selectAll();
+            updateStatusBar("Search results for " + srtPassedSearchTextField + " complete");
+        }
+ 
+    }
+    
+    public ObservableList<User> searchUsersAlgorithm(String srtPassedSearchTextField)
+    {
+        ObservableList<User> searchedUsers = FXCollections.observableArrayList();
+        for(User identifier: allUsers)
+        {
+            String strFullName = identifier.getSrtFirstName() + " " + identifier.getSrtLastName();
+            Integer ingIntergerRef = identifier.getIntReference(); // changing primitive data type int to Interger
 
+            if(identifier.getSrtFirstName().equalsIgnoreCase(srtPassedSearchTextField))
+            {
+                searchedUsers.add(identifier);
+            }
+            else if(identifier.getSrtLastName().equalsIgnoreCase(srtPassedSearchTextField))
+            {
+                searchedUsers.add(identifier);
+            }
+            else if (strFullName.equalsIgnoreCase(srtPassedSearchTextField))
+            {
+                searchedUsers.add(identifier);
+            }
+            else if (ingIntergerRef.toString().equals(srtPassedSearchTextField))
+            {
+                searchedUsers.add(identifier);
+            }
+        } // end of for loop
+        return searchedUsers;
+    }
+    
     public void searchAppointments(int intUserTableindex)
     {
-        SearchedAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> SearchedAppointments = FXCollections.observableArrayList();
         Integer intUserRefSelected = displayedUsers.get(intUserTableindex).getIntReference();
         
         for(Appointment identifier: allAppointments)
@@ -60,55 +117,68 @@ public class Controller
         updateAppointmentsTable(SearchedAppointments);       
     }
     
-    public void searchUsers(String srtPassedText)
+    
+    public void populateUserDetails(int intUserTableindex)
     {
-        searchedUsers = FXCollections.observableArrayList();
+        Integer intUserRefSelected = displayedUsers.get(intUserTableindex).getIntReference();
         
-        if(srtPassedText.equals("") || srtPassedText.equals(" "))
-        {
-            searchedUsers = allUsers;
-        }
-        else
-        {
-            updateStatusBar("Searching for " + srtPassedText);
-            for(User identifier: allUsers)
-            {
-                String strFullName = identifier.getSrtFirstName() + " " + identifier.getSrtLastName();
-                Integer ingIntergerRef = identifier.getIntReference(); // changing primitive data type int to Interger
-
-                if(identifier.getSrtFirstName().equalsIgnoreCase(srtPassedText))
-                {
-                    searchedUsers.add(identifier);
-                }
-                else if(identifier.getSrtLastName().equalsIgnoreCase(srtPassedText))
-                {
-                    searchedUsers.add(identifier);
-                }
-                else if (strFullName.equalsIgnoreCase(srtPassedText))
-                {
-                    searchedUsers.add(identifier);
-                }
-                else if (ingIntergerRef.toString().equals(srtPassedText))
-                {
-                    searchedUsers.add(identifier);
-                }
-            } // end of for loop
-            
-        } //end of else
-        
-        if(searchedUsers.isEmpty())
-        {
-            updateStatusBar("No results found for: " + srtPassedText);
-        }
-        else
-        {
-            updateUsersTable(searchedUsers);
-            searchAppointments(getUserTableSelection());
-        }
-        
-        view.txtSearchTextField.selectAll();
+        view.txtUserFirstName.setText(displayedUsers.get(intUserTableindex).getSrtFirstName());
+        view.txtUserLastName.setText(displayedUsers.get(intUserTableindex).getSrtLastName());
+        view.txtUserRefNumber.setText(intUserRefSelected.toString());
+        view.txtUserAddress.setText(displayedUsers.get(intUserTableindex).getSrtAddress()); 
     }
     
+    public void populateAppointmentDetails(int intAppointmentTableindex)
+    {
+        Integer intAppointmentRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAppointmentRef();
+        Integer intApointmentUserRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAttendingPatient();
+        
+        view.txtAppointmentRef.setText(intAppointmentRefSelected.toString());
+        view.txtApointmentUserRef.setText(intApointmentUserRefSelected.toString());
+        view.txtAppointmentOptician.setText(displayedAppointments.get(intAppointmentTableindex).getStrAttendingOptician());
+        view.txtAppointmentTime.setText(displayedAppointments.get(intAppointmentTableindex).getStrAppointmentTime()); 
+        view.txtAppointmentType.setText(displayedAppointments.get(intAppointmentTableindex).getStrAppointmentTime()); 
+    }
+    
+    public void clearUserDetails()
+    {
+        view.txtUserFirstName.setText("");
+        view.txtUserLastName.setText("");
+        view.txtUserRefNumber.setText("");
+        view.txtUserAddress.setText(""); 
+    }
+    
+    public void clearAppointmentDetails()
+    {
+        view.txtAppointmentRef.setText("");
+        view.txtApointmentUserRef.setText("");
+        view.txtAppointmentOptician.setText("");
+        view.txtAppointmentTime.setText(""); 
+        view.txtAppointmentType.setText(""); 
+    }
+    
+
+    public int getUserTableSelection()
+    {
+        int intUserTableindex = 0;
+        if ((view.tabUserTable.getSelectionModel().selectedIndexProperty().get()) >= 0)
+        {
+            intUserTableindex = view.tabUserTable.getSelectionModel().selectedIndexProperty().get();
+        }
+        return  intUserTableindex;       
+    }
+    
+    public int getAppointmentTableSelection()
+    {
+        int intAppointmentTableindex = 0;
+        if ((view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().get()) >= 0)
+        {
+            intAppointmentTableindex = view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().get();
+        }
+        return  intAppointmentTableindex;       
+    }
+    
+
     public void updateUsersTable(ObservableList<User> updatedUsers)
     {
         displayedUsers = updatedUsers;
@@ -121,7 +191,17 @@ public class Controller
         view.tabAppointmentTable.setItems(displayedAppointments);
     }
     
+    public void updateStatusBar(String srtPassedText)
+    {
+        view.lblStatusBarText.setText("Test: " + srtPassedText);
+        System.out.println("Status bar updated with " + srtPassedText);
+    }
     
+    
+    public Scene getSceneFromView()
+    {       
+        return view.getScene();
+    }
     public ObservableList<User> getUser()
     {
         allUsers = FXCollections.observableArrayList();
@@ -160,27 +240,5 @@ public class Controller
         allAppointments.add(new Appointment(200013, 100009, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         allAppointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
         return allAppointments;
-    }
-    
-    public int getUserTableSelection()
-    {
-        int intUserTableindex = 0;
-        if ((view.tabUserTable.getSelectionModel().selectedIndexProperty().get()) >= 0)
-        {
-            intUserTableindex = view.tabUserTable.getSelectionModel().selectedIndexProperty().get();
-        }
-        return  intUserTableindex;       
-    }
-    
-    public void updateStatusBar(String srtPassedText)
-    {
-        view.lblStatusBarText.setText("Test: " + srtPassedText);
-        System.out.println("Status bar updated with " + srtPassedText);
-    }
-    
-    public Scene getSceneFromView()
-    {       
-        return view.getScene();
-    }
-    
+    }    
 }
