@@ -1,5 +1,6 @@
 package caledonianopticians;
 
+import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,27 +27,110 @@ public class Controller
        updateAppointmentsTable(allAppointments);
        
        view.btnSearch.setOnAction(e -> handleBtnSearch());
+       view.btnUserModify.setOnAction(e -> handleBtnUserModify());
+       view.btnUserSave.setOnAction(e -> handleBtnUserSave());
+       view.btnUserCancel.setOnAction(e -> handleBtnUserCancel());
+       
        view.txtSearchTextField.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) { handleBtnSearch(); } });
        view.tabUserTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionUserTable());
-       view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionUserTable());
+       view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionAppointmentTable());
        
     }
     
-    public void handleBtnSearch()
+
+    
+    public void handleBtnUserModify()
     {
+        userDetailsMakeEditable();
+        view.btnUserSave.setDisable(false);
+        view.btnUserCancel.setDisable(false);
         
-        searchUsersValidator(view.txtSearchTextField.getText());
+        view.tabUserTable.setDisable(true);
+        view.tabAppointmentTable.setDisable(true);
+        view.txtSearchTextField.setDisable(true);
+        view.btnSearch.setDisable(true);
+        view.btnUserNew.setDisable(true);
+        view.btnUserModify.setDisable(true);
+        view.btnAppointmentNew.setDisable(true);
+        view.btnAppointmentModify.setDisable(true);
     }
     
-    public void handleListenerSelectionUserTable()
-    {    
-        searchAppointments(getUserTableSelection());
-        populateUserDetails(getUserTableSelection());
+    public void handleBtnUserSave()
+    {
+        setElementOfUsersArray(getUserFromDetails(), getUserTableSelection());
+        
+        view.btnUserSave.setDisable(true);
+        view.btnUserCancel.setDisable(true);
+        
+        view.tabUserTable.setDisable(false);
+        view.tabAppointmentTable.setDisable(false);
+        view.txtSearchTextField.setDisable(false);
+        view.btnSearch.setDisable(false);
+        view.btnUserNew.setDisable(false);
+        view.btnUserModify.setDisable(false);
+        view.btnAppointmentNew.setDisable(false);
+        view.btnAppointmentModify.setDisable(false);
     }
     
-    public void handleListenerSelectionAppointmentTable()
-    {    
-        populateUserDetails(getAppointmentTableSelection());
+    public void setElementOfUsersArray(User userFromDetails, int intUserTableindex)
+    {
+        allUsers.set(intUserTableindex, userFromDetails);
+    }
+    
+    public User getUserFromDetails()
+    {
+        User userFromDetails = new User();
+        userFromDetails.setIntReference(Integer.parseInt(view.txtUserRefNumber.getText()));
+        userFromDetails.setSrtFirstName(view.txtUserFirstName.getText());
+        userFromDetails.setSrtLastName(view.txtUserLastName.getText());
+        userFromDetails.setSrtAddress(view.txtUserAddress.getText());
+        
+        return userFromDetails; 
+    }
+    
+    public void handleBtnUserCancel()
+    {
+        clearUserDetails();
+        userDetailsMakeNonEditable();
+        view.btnUserSave.setDisable(true);
+        view.btnUserCancel.setDisable(true);
+        
+        view.tabUserTable.setDisable(false);
+        view.tabAppointmentTable.setDisable(false);
+        view.txtSearchTextField.setDisable(false);
+        view.btnSearch.setDisable(false);
+        view.btnUserNew.setDisable(false);
+        view.btnUserModify.setDisable(false);
+        view.btnAppointmentNew.setDisable(false);
+        view.btnAppointmentModify.setDisable(false);
+    }
+    
+    
+    
+    
+    
+    public void userDetailsMakeEditable()
+    {
+        view.txtUserFirstName.setEditable(true);
+        view.txtUserFirstName.setOpacity(1.0);
+        view.txtUserLastName.setEditable(true);
+        view.txtUserLastName.setOpacity(1.0);
+        view.txtUserRefNumber.setEditable(true);
+        view.txtUserRefNumber.setOpacity(1.0);
+        view.txtUserAddress.setEditable(true);
+        view.txtUserAddress.setOpacity(1.0);      
+    }
+    
+    public void userDetailsMakeNonEditable()
+    {
+        view.txtUserFirstName.setEditable(false);
+        view.txtUserFirstName.setOpacity(0.75);
+        view.txtUserLastName.setEditable(false);
+        view.txtUserLastName.setOpacity(0.75);
+        view.txtUserRefNumber.setEditable(false);
+        view.txtUserRefNumber.setOpacity(0.75);
+        view.txtUserAddress.setEditable(false);
+        view.txtUserAddress.setOpacity(0.75);    
     }
     
     
@@ -58,14 +142,17 @@ public class Controller
         {
             updateUsersTable(allUsers);
             updateAppointmentsTable(allAppointments);
+            clearAppointmentDetails();
             clearUserDetails();
             view.txtSearchTextField.selectAll();
-            updateStatusBar("No results found for " + srtPassedSearchTextField + "All users displayed");
+            updateStatusBar("No results found for " + srtPassedSearchTextField + ", All users displayed");
         }
         else
         {
             updateUsersTable(searchUsersAlgorithm(srtPassedSearchTextField));
             populateUserDetails(getUserTableSelection());
+            searchAppointments(getUserTableSelection());
+            populateAppointmentDetails(getAppointmentTableSelection());
             view.txtSearchTextField.selectAll();
             updateStatusBar("Search results for " + srtPassedSearchTextField + " complete");
         }
@@ -130,14 +217,22 @@ public class Controller
     
     public void populateAppointmentDetails(int intAppointmentTableindex)
     {
-        Integer intAppointmentRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAppointmentRef();
-        Integer intApointmentUserRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAttendingPatient();
-        
-        view.txtAppointmentRef.setText(intAppointmentRefSelected.toString());
-        view.txtApointmentUserRef.setText(intApointmentUserRefSelected.toString());
-        view.txtAppointmentOptician.setText(displayedAppointments.get(intAppointmentTableindex).getStrAttendingOptician());
-        view.txtAppointmentTime.setText(displayedAppointments.get(intAppointmentTableindex).getStrAppointmentTime()); 
-        view.txtAppointmentType.setText(displayedAppointments.get(intAppointmentTableindex).getStrAppointmentTime()); 
+        if(displayedAppointments.isEmpty())
+        {
+            clearAppointmentDetails();
+        }
+        else
+        {
+            Integer intAppointmentRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAppointmentRef();
+            Integer intApointmentUserRefSelected = displayedAppointments.get(intAppointmentTableindex).getIntAttendingPatient();
+
+            view.txtAppointmentRef.setText(intAppointmentRefSelected.toString());
+            view.txtApointmentUserRef.setText(intApointmentUserRefSelected.toString());
+            view.txtAppointmentOptician.setText(displayedAppointments.get(intAppointmentTableindex).getStrAttendingOptician());
+            view.txtAppointmentTime.setText(displayedAppointments.get(intAppointmentTableindex).getStrAppointmentTime()); 
+            view.txtAppointmentType.setText(displayedAppointments.get(intAppointmentTableindex).getAppointmentType());
+            view.txtAppointmentNote.setText(displayedAppointments.get(intAppointmentTableindex).getSrtNote());
+        }
     }
     
     public void clearUserDetails()
@@ -155,6 +250,7 @@ public class Controller
         view.txtAppointmentOptician.setText("");
         view.txtAppointmentTime.setText(""); 
         view.txtAppointmentType.setText(""); 
+        view.txtAppointmentNote.setText(""); 
     }
     
 
@@ -225,20 +321,38 @@ public class Controller
     public ObservableList<Appointment> getAppointment()
     {
         allAppointments = FXCollections.observableArrayList();
-        allAppointments.add(new Appointment(200001, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes"));
-        allAppointments.add(new Appointment(200002, 100002, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes"));
-        allAppointments.add(new Appointment(200003, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small"));
-        allAppointments.add(new Appointment(200004, 100004, "Dr Julian Bashir", "30.04.18 - 1430", "broken left eye"));
-        allAppointments.add(new Appointment(200005, 100005, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye"));
-        allAppointments.add(new Appointment(200006, 100005, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye"));
-        allAppointments.add(new Appointment(200007, 100005, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200008, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200009, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200010, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200011, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200012, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200013, 100009, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
-        allAppointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind"));
+        allAppointments.add(new Appointment(200001, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes", "Note 1"));
+        allAppointments.add(new Appointment(200002, 100002, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes", "Note 1"));
+        allAppointments.add(new Appointment(200003, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small", "Note 1"));
+        allAppointments.add(new Appointment(200004, 100004, "Dr Julian Bashir", "30.04.18 - 1430", "broken left eye", "Note 1"));
+        allAppointments.add(new Appointment(200005, 100005, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye", "Note 1"));
+        allAppointments.add(new Appointment(200006, 100005, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye", "Note 1"));
+        allAppointments.add(new Appointment(200007, 100005, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200008, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200009, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200010, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200011, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200012, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200013, 100009, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
         return allAppointments;
-    }    
+    }  
+    
+     public void handleBtnSearch()
+    {
+        searchUsersValidator(view.txtSearchTextField.getText());
+    }
+    
+    public void handleListenerSelectionUserTable()
+    {    
+        searchAppointments(getUserTableSelection());
+        populateUserDetails(getUserTableSelection());
+        populateAppointmentDetails(getAppointmentTableSelection());
+    }
+    
+    public void handleListenerSelectionAppointmentTable()
+    {    
+        populateAppointmentDetails(getAppointmentTableSelection());
+    }
+    
 }

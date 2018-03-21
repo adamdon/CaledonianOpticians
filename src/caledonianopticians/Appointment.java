@@ -6,15 +6,17 @@ public class Appointment
     private int intAttendingPatient;
     private String strAttendingOptician;
     private String strAppointmentTime;
-    private String appointmentType;
+    private String strAppointmentType;
+    private String srtNote;
 
-    public Appointment(int intAppointmentRef, int intAttendingPatient, String strAttendingOptician, String strAppointmentTime, String appointmentType)
+    public Appointment(int intAppointmentRef, int intAttendingPatient, String strAttendingOptician, String strAppointmentTime, String appointmentType, String psrtNote)
     {
         this.intAppointmentRef = intAppointmentRef;
         this.intAttendingPatient = intAttendingPatient;
         this.strAttendingOptician = strAttendingOptician;
         this.strAppointmentTime = strAppointmentTime;
-        this.appointmentType = appointmentType;
+        this.strAppointmentType = appointmentType;
+        this.srtNote = psrtNote;
     }
 
     public int getIntAppointmentRef()
@@ -41,6 +43,12 @@ public class Appointment
     {
         return strAttendingOptician;
     }
+    
+    public String getSrtNote()
+    {
+        return srtNote;
+    }
+    
 
     public void setStrAttendingOptician(String strAttendingOptician)
     {
@@ -59,12 +67,17 @@ public class Appointment
 
     public String getAppointmentType()
     {
-        return appointmentType;
+        return strAppointmentType;
     }
 
     public void setAppointmentType(String appointmentType)
     {
-        this.appointmentType = appointmentType;
+        this.strAppointmentType = appointmentType;
+    }
+    
+     public void setSrtNote(String srtNote)
+    {
+        this.srtNote = srtNote;
     }
     
     

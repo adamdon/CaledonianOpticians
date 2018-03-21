@@ -38,6 +38,8 @@ public class View
                    
     Button btnUserNew;
     Button btnUserModify;
+    Button btnUserSave;
+    Button btnUserCancel;
     Button btnAppointmentNew;
     Button btnAppointmentModify;
     Button btnSearch;
@@ -52,6 +54,7 @@ public class View
     TextField txtAppointmentOptician;
     TextField txtAppointmentTime;
     TextField txtAppointmentType;
+    TextField txtAppointmentNote;
     Label lblGcuLogo;
     Label lblUserTitle;
     Label lblUserFirstName;
@@ -64,6 +67,7 @@ public class View
     Label lblAppointmentOptician;
     Label lblAppointmentTime;
     Label lblAppointmentType;
+    Label lblAppointmentNote;
     Label lblSpacerBlankH;
     Label lblSpacerBlankW;
     Label lblStatusBarLabel;
@@ -105,9 +109,21 @@ public class View
     {
         btnUserNew = new Button();
         btnUserNew.setText("Register User");
+        btnUserNew.setMinWidth(140);
  
         btnUserModify = new Button();
-        btnUserModify.setText("Modify user");
+        btnUserModify.setText("Modify User Details");
+        btnUserModify.setMinWidth(240);
+        
+        btnUserSave = new Button();
+        btnUserSave.setText("Save");
+        btnUserSave.setMinWidth(140);
+        btnUserSave.setDisable(true);
+        
+        btnUserCancel = new Button();
+        btnUserCancel.setText("Cancel");
+        btnUserCancel.setMinWidth(240);
+        btnUserCancel.setDisable(true);
         
         btnAppointmentNew  = new Button();
         btnAppointmentNew.setText("Register Appointment");
@@ -122,18 +138,42 @@ public class View
         btnMakeAp.setText("Make Appointment");
         
         txtSearchTextField = new TextField();
-        txtSearchTextField.setText("P124564");
+        txtSearchTextField.setPromptText("Enter full, first, last name or referance number");
+        txtSearchTextField.setMinWidth(260);
         
-        txtUserFirstName = new TextField("Homer ");
-        txtUserLastName = new TextField("Simpson ");
-        txtUserRefNumber = new TextField("10001 ");
-        txtUserAddress = new TextField("24 New Road ");
+        txtUserFirstName = new TextField("");
+        txtUserFirstName.setEditable(false);
+        txtUserFirstName.setOpacity(0.75);
+        txtUserFirstName.setMinWidth(230);
+        txtUserLastName = new TextField("");
+        txtUserLastName.setEditable(false);
+        txtUserLastName.setOpacity(0.75);
+        txtUserRefNumber = new TextField("");
+        txtUserRefNumber.setEditable(false);
+        txtUserRefNumber.setOpacity(0.75);
+        txtUserAddress = new TextField("");
+        txtUserAddress.setEditable(false);
+        txtUserAddress.setOpacity(0.75);
         
-        txtAppointmentRef = new TextField("200001 ");
-        txtApointmentUserRef = new TextField("100004 ");
-        txtAppointmentOptician = new TextField("Dr Leonard McCoy ");
-        txtAppointmentTime = new TextField("30.04.18 - 1430 ");
-        txtAppointmentType = new TextField("sore eyes ");
+        txtAppointmentRef = new TextField("");
+        txtAppointmentRef.setEditable(false);
+        txtAppointmentRef.setOpacity(0.75);
+        txtApointmentUserRef = new TextField("");
+        txtApointmentUserRef.setEditable(false);
+        txtApointmentUserRef.setOpacity(0.75);
+        txtAppointmentOptician = new TextField("");
+        txtAppointmentOptician.setEditable(false);
+        txtAppointmentOptician.setOpacity(0.75);
+        txtAppointmentTime = new TextField("");
+        txtAppointmentTime.setEditable(false);
+        txtAppointmentTime.setOpacity(0.75);
+        txtAppointmentType = new TextField("");
+        txtAppointmentType.setEditable(false);
+        txtAppointmentType.setOpacity(0.75);
+        txtAppointmentNote = new TextField("");
+        txtAppointmentNote.setEditable(false);
+        txtAppointmentNote.setOpacity(0.75);
+        txtAppointmentNote.setMinHeight(50);
         
         lblGcuLogo = new Label();
         lblGcuLogo.setText("Caledonian Opticians");
@@ -155,11 +195,12 @@ public class View
         lblAppointmentOptician = new Label("Attending Optician:");
         lblAppointmentTime = new Label("Appointment Time:");
         lblAppointmentType = new Label("Appointment Type:");
+        lblAppointmentNote = new Label("Appointment Note:");
         
         lblSpacerBlankH = new Label(" ");
         lblSpacerBlankH.setMinHeight(100);
         lblSpacerBlankW = new Label(" ");
-        lblSpacerBlankW.setMinWidth(520);
+        lblSpacerBlankW.setMinWidth(500);
         
         lblStatusBarLabel = new Label("Status Bar: ");
         lblStatusBarText = new Label("Searching for Users...");
@@ -275,21 +316,25 @@ public class View
         gridRight.add(txtUserAddress, 1, 4);
         gridRight.add(btnUserNew, 0, 5);
         gridRight.add(btnUserModify, 1, 5);
+        gridRight.add(btnUserSave, 0, 6);
+        gridRight.add(btnUserCancel, 1, 6);
         
-        gridRight.add(lblSpacerBlankH, 0, 6);
-        gridRight.add(lblAppointmentTitle, 0, 7, 2, 1);
-        gridRight.add(lblAppointmentRef, 0, 8);
-        gridRight.add(lblAppointmentUserRef, 0, 9);
-        gridRight.add(lblAppointmentOptician, 0, 10);
-        gridRight.add(lblAppointmentTime, 0, 11);
-        gridRight.add(lblAppointmentType, 0, 12);
-        gridRight.add(txtAppointmentRef, 1, 8);
-        gridRight.add(txtApointmentUserRef, 1, 9);
-        gridRight.add(txtAppointmentOptician, 1, 10);       
-        gridRight.add(txtAppointmentTime, 1, 11);
-        gridRight.add(txtAppointmentType, 1, 12);    
-        gridRight.add(btnAppointmentNew, 0, 13); 
-        gridRight.add(btnAppointmentModify, 1, 13); 
+        gridRight.add(lblSpacerBlankH, 0, 7);
+        gridRight.add(lblAppointmentTitle, 0, 8, 2, 1);
+        gridRight.add(lblAppointmentRef, 0, 9);
+        gridRight.add(lblAppointmentUserRef, 0, 10);
+        gridRight.add(lblAppointmentOptician, 0, 11);
+        gridRight.add(lblAppointmentTime, 0, 12);
+        gridRight.add(lblAppointmentType, 0, 13);
+        gridRight.add(lblAppointmentNote, 0, 14);
+        gridRight.add(txtAppointmentRef, 1, 9);
+        gridRight.add(txtApointmentUserRef, 1, 10);
+        gridRight.add(txtAppointmentOptician, 1, 11);       
+        gridRight.add(txtAppointmentTime, 1, 12);
+        gridRight.add(txtAppointmentType, 1, 13); 
+        gridRight.add(txtAppointmentNote, 1, 14); 
+        gridRight.add(btnAppointmentNew, 0, 15); 
+        gridRight.add(btnAppointmentModify, 1, 15); 
         
         gridRoot = new GridPane();
         gridRoot.setAlignment(Pos.TOP_LEFT);
