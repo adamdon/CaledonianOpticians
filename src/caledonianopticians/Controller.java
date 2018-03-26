@@ -16,6 +16,7 @@ public class Controller
     ObservableList<User> displayedUsers;
     ObservableList<Appointment> allAppointments;
     ObservableList<Appointment> displayedAppointments;
+    Boolean isUserModifyModeActive;
 
     public Controller() 
     {
@@ -27,7 +28,9 @@ public class Controller
        updateAppointmentsTable(allAppointments);
        
        view.btnSearch.setOnAction(e -> handleBtnSearch());
+       
        view.btnUserModify.setOnAction(e -> handleBtnUserModify());
+       view.btnUserNew.setOnAction(e -> handleBtnUserRegister());
        view.btnUserSave.setOnAction(e -> handleBtnUserSave());
        view.btnUserCancel.setOnAction(e -> handleBtnUserCancel());
        
@@ -39,9 +42,92 @@ public class Controller
     
 
     
+    
     public void handleBtnUserModify()
     {
+        isUserModifyModeActive = true;
         userDetailsMakeEditable();
+    }
+    
+    public void handleBtnUserRegister()
+    {
+        isUserModifyModeActive = false;
+        clearUserDetails();
+        view.txtUserRefNumber.setText(Integer.toString(allUsers.get(allUsers.size() - 1).getIntReference() + 1));
+        userDetailsMakeEditable();
+    }
+    
+    public void handleBtnUserSave()
+    {
+        if(isUserModifyModeActive == true)
+        {
+            setElementOfUsersArray(getUserFromDetails(), getAllUsersElement());
+        }
+        else if(isUserModifyModeActive == false)
+        {
+            addElementOfUsersArray(getUserFromDetails());
+        }
+        
+        handleBtnSearch();
+        userDetailsMakeNonEditable();
+    }
+    
+    public void handleBtnUserCancel()
+    {
+        clearUserDetails();
+        userDetailsMakeNonEditable();
+    }
+    
+    public int getAllUsersElement()
+    {
+        Integer intUserRefUserDetils = Integer.parseInt(view.txtUserRefNumber.getText());
+        int intElementOfAllUsersArray = 0;
+        int intIndexForLoop = 0;
+        
+        for(User identifier: allUsers)
+        {
+            if(intUserRefUserDetils.equals(identifier.getIntReference()))
+            {
+                intElementOfAllUsersArray = intIndexForLoop;
+            }//end if
+            intIndexForLoop = intIndexForLoop + 1;
+        } // end for
+        
+        return intElementOfAllUsersArray;
+    }
+    
+    public void setElementOfUsersArray(User userFromDetails, int intUserTableindex)
+    {
+        allUsers.set(intUserTableindex, userFromDetails);
+    }
+    
+    public void addElementOfUsersArray(User userFromDetails)
+    {
+        allUsers.add(userFromDetails);
+    }
+    
+    public User getUserFromDetails()
+    {
+        User userFromDetails = new User();
+        userFromDetails.setIntReference(Integer.parseInt(view.txtUserRefNumber.getText()));
+        userFromDetails.setSrtFirstName(view.txtUserFirstName.getText());
+        userFromDetails.setSrtLastName(view.txtUserLastName.getText());
+        userFromDetails.setSrtAddress(view.txtUserAddress.getText());
+        
+        return userFromDetails; 
+    }
+      
+    public void userDetailsMakeEditable()
+    {
+        view.txtUserFirstName.setEditable(true);
+        view.txtUserFirstName.setOpacity(1.0);
+        view.txtUserLastName.setEditable(true);
+        view.txtUserLastName.setOpacity(1.0);
+//        view.txtUserRefNumber.setEditable(true);
+//        view.txtUserRefNumber.setOpacity(1.0);
+        view.txtUserAddress.setEditable(true);
+        view.txtUserAddress.setOpacity(1.0);
+        
         view.btnUserSave.setDisable(false);
         view.btnUserCancel.setDisable(false);
         
@@ -55,82 +141,28 @@ public class Controller
         view.btnAppointmentModify.setDisable(true);
     }
     
-    public void handleBtnUserSave()
-    {
-        setElementOfUsersArray(getUserFromDetails(), getUserTableSelection());
-        
-        view.btnUserSave.setDisable(true);
-        view.btnUserCancel.setDisable(true);
-        
-        view.tabUserTable.setDisable(false);
-        view.tabAppointmentTable.setDisable(false);
-        view.txtSearchTextField.setDisable(false);
-        view.btnSearch.setDisable(false);
-        view.btnUserNew.setDisable(false);
-        view.btnUserModify.setDisable(false);
-        view.btnAppointmentNew.setDisable(false);
-        view.btnAppointmentModify.setDisable(false);
-    }
-    
-    public void setElementOfUsersArray(User userFromDetails, int intUserTableindex)
-    {
-        allUsers.set(intUserTableindex, userFromDetails);
-    }
-    
-    public User getUserFromDetails()
-    {
-        User userFromDetails = new User();
-        userFromDetails.setIntReference(Integer.parseInt(view.txtUserRefNumber.getText()));
-        userFromDetails.setSrtFirstName(view.txtUserFirstName.getText());
-        userFromDetails.setSrtLastName(view.txtUserLastName.getText());
-        userFromDetails.setSrtAddress(view.txtUserAddress.getText());
-        
-        return userFromDetails; 
-    }
-    
-    public void handleBtnUserCancel()
-    {
-        clearUserDetails();
-        userDetailsMakeNonEditable();
-        view.btnUserSave.setDisable(true);
-        view.btnUserCancel.setDisable(true);
-        
-        view.tabUserTable.setDisable(false);
-        view.tabAppointmentTable.setDisable(false);
-        view.txtSearchTextField.setDisable(false);
-        view.btnSearch.setDisable(false);
-        view.btnUserNew.setDisable(false);
-        view.btnUserModify.setDisable(false);
-        view.btnAppointmentNew.setDisable(false);
-        view.btnAppointmentModify.setDisable(false);
-    }
-    
-    
-    
-    
-    
-    public void userDetailsMakeEditable()
-    {
-        view.txtUserFirstName.setEditable(true);
-        view.txtUserFirstName.setOpacity(1.0);
-        view.txtUserLastName.setEditable(true);
-        view.txtUserLastName.setOpacity(1.0);
-        view.txtUserRefNumber.setEditable(true);
-        view.txtUserRefNumber.setOpacity(1.0);
-        view.txtUserAddress.setEditable(true);
-        view.txtUserAddress.setOpacity(1.0);      
-    }
-    
     public void userDetailsMakeNonEditable()
     {
         view.txtUserFirstName.setEditable(false);
         view.txtUserFirstName.setOpacity(0.75);
         view.txtUserLastName.setEditable(false);
         view.txtUserLastName.setOpacity(0.75);
-        view.txtUserRefNumber.setEditable(false);
-        view.txtUserRefNumber.setOpacity(0.75);
+//        view.txtUserRefNumber.setEditable(false);
+//        view.txtUserRefNumber.setOpacity(0.75);
         view.txtUserAddress.setEditable(false);
-        view.txtUserAddress.setOpacity(0.75);    
+        view.txtUserAddress.setOpacity(0.75);   
+        
+        view.btnUserSave.setDisable(true);
+        view.btnUserCancel.setDisable(true);
+        
+        view.tabUserTable.setDisable(false);
+        view.tabAppointmentTable.setDisable(false);
+        view.txtSearchTextField.setDisable(false);
+        view.btnSearch.setDisable(false);
+        view.btnUserNew.setDisable(false);
+        view.btnUserModify.setDisable(false);
+        view.btnAppointmentNew.setDisable(false);
+        view.btnAppointmentModify.setDisable(false);
     }
     
     
@@ -149,7 +181,7 @@ public class Controller
         }
         else
         {
-            updateUsersTable(searchUsersAlgorithm(srtPassedSearchTextField));
+            updateUsersTable(validatedSearchedUsers);
             populateUserDetails(getUserTableSelection());
             searchAppointments(getUserTableSelection());
             populateAppointmentDetails(getAppointmentTableSelection());

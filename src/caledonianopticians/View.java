@@ -138,7 +138,7 @@ public class View
         btnMakeAp.setText("Make Appointment");
         
         txtSearchTextField = new TextField();
-        txtSearchTextField.setPromptText("Enter full, first, last name or referance number");
+        txtSearchTextField.setPromptText("Enter full, first, last name or reference number");
         txtSearchTextField.setMinWidth(260);
         
         txtUserFirstName = new TextField("");
