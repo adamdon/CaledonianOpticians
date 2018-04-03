@@ -18,6 +18,16 @@ public class Appointment
         this.strAppointmentType = appointmentType;
         this.srtNote = psrtNote;
     }
+    
+    public Appointment()
+    {
+        this.intAppointmentRef = 000000;
+        this.intAttendingPatient = 000000;
+        this.strAttendingOptician = "OpticianName";
+        this.strAppointmentTime = "00:00 01.01.2018";
+        this.strAppointmentType = "Type";
+        this.srtNote = "NoteText";
+    }
 
     public int getIntAppointmentRef()
     {
