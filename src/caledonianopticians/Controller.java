@@ -64,6 +64,7 @@ public class Controller
         else
         {
             appointmentDetailsMakeEditable();
+            updateStatusBar("Make Appointment changes then Save");
         } 
     }
     
@@ -73,6 +74,7 @@ public class Controller
         clearAppointmentDetails();
         view.txtAppointmentRef.setText(Integer.toString(allAppointments.get(allAppointments.size() - 1).getIntAppointmentRef() + 1));
         appointmentDetailsMakeEditable();
+        updateStatusBar("Type all Appointment details then Save");
     }
     
     public void handleBtnAppointmentSave()
@@ -88,12 +90,14 @@ public class Controller
         
         handleBtnSearch();
         appointmentDetailsMakeNonEditable();
+        updateStatusBar("Appointment Saved");
     }
     
     public void handleBtnAppointmentCancel()
     {
         clearAppointmentDetails();
         appointmentDetailsMakeNonEditable();
+        updateStatusBar("...");
     }
     
     public int getAllAppointmentsElement()
@@ -231,6 +235,7 @@ public class Controller
         else
         {
             userDetailsMakeEditable();
+            updateStatusBar("Make User changes then Save");
         } 
     }
     
@@ -240,6 +245,7 @@ public class Controller
         clearUserDetails();
         view.txtUserRefNumber.setText(Integer.toString(allUsers.get(allUsers.size() - 1).getIntReference() + 1));
         userDetailsMakeEditable();
+        updateStatusBar("Type all User details then Save");
     }
     
     public void handleBtnUserSave()
@@ -255,12 +261,14 @@ public class Controller
         
         handleBtnSearch();
         userDetailsMakeNonEditable();
+        updateStatusBar("User Saved");
     }
     
     public void handleBtnUserCancel()
     {
         clearUserDetails();
         userDetailsMakeNonEditable();
+        updateStatusBar("...");
     }
     
     public int getAllUsersElement()
@@ -512,6 +520,7 @@ public class Controller
         fadTransition.setFromValue(0.1);
         fadTransition.setToValue(1.0);
         fadTransition.setCycleCount(3);
+        fadTransition.setAutoReverse(true);
         fadTransition.play();
     }
     
@@ -570,11 +579,13 @@ public class Controller
         searchAppointments(getUserTableSelection());
         populateUserDetails(getUserTableSelection());
         populateAppointmentDetails(getAppointmentTableSelection());
+        updateStatusBar("User selected");
     }
     
     public void handleListenerSelectionAppointmentTable()
     {    
         populateAppointmentDetails(getAppointmentTableSelection());
+        updateStatusBar("Appointment selected");
     }
     
 }
