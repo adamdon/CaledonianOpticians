@@ -1,6 +1,7 @@
 package caledonianopticians;
 
 import java.util.Scanner;
+import javafx.animation.Animation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +9,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
 public class Controller
 {
@@ -177,7 +181,7 @@ public class Controller
             clearAppointmentDetails();
             clearUserDetails();
             view.txtSearchTextField.selectAll();
-            updateStatusBar("No results found for " + srtPassedSearchTextField + ", All users displayed");
+            updateStatusBar("No results found for " + srtPassedSearchTextField + " - All users displayed");
         }
         else
         {
@@ -321,8 +325,13 @@ public class Controller
     
     public void updateStatusBar(String srtPassedText)
     {
-        view.lblStatusBarText.setText("Test: " + srtPassedText);
+        view.lblStatusBarText.setText(" " + srtPassedText);
         System.out.println("Status bar updated with " + srtPassedText);
+        FadeTransition fadTransition = new FadeTransition(Duration.seconds(0.5), view.lblStatusBarText);
+        fadTransition.setFromValue(0.1);
+        fadTransition.setToValue(1.0);
+        fadTransition.setCycleCount(3);
+        fadTransition.play();
     }
     
     

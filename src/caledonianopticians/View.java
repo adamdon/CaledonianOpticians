@@ -42,6 +42,8 @@ public class View
     Button btnUserCancel;
     Button btnAppointmentNew;
     Button btnAppointmentModify;
+    Button btnAppointmentSave;
+    Button btnAppointmentCancel;
     Button btnSearch;
     Button btnMakeAp;
     TextField txtSearchTextField;
@@ -127,9 +129,21 @@ public class View
         
         btnAppointmentNew  = new Button();
         btnAppointmentNew.setText("Register Appointment");
+        btnAppointmentNew.setMinWidth(140);
        
         btnAppointmentModify = new Button();
         btnAppointmentModify.setText("Modify Appointment");
+        btnAppointmentModify.setMinWidth(240);
+        
+        btnAppointmentSave = new Button();
+        btnAppointmentSave.setText("Save");
+        btnAppointmentSave.setMinWidth(140);
+        btnAppointmentSave.setDisable(true);
+        
+        btnAppointmentCancel = new Button();
+        btnAppointmentCancel.setText("Cancel");
+        btnAppointmentCancel.setMinWidth(240);
+        btnAppointmentCancel.setDisable(true);
         
         btnSearch = new Button();
         btnSearch.setText("Search");
@@ -198,12 +212,13 @@ public class View
         lblAppointmentNote = new Label("Appointment Note:");
         
         lblSpacerBlankH = new Label(" ");
-        lblSpacerBlankH.setMinHeight(100);
+        lblSpacerBlankH.setMinHeight(65);
         lblSpacerBlankW = new Label(" ");
         lblSpacerBlankW.setMinWidth(500);
         
         lblStatusBarLabel = new Label("Status Bar: ");
-        lblStatusBarText = new Label("Searching for Users...");
+        lblStatusBarText = new Label("...");
+        lblStatusBarText.setStyle("-fx-font-weight: bold");
         
         //imageView code for GCU logo
         try {fisImageStream = new FileInputStream("img/gculogo.png");}
@@ -335,6 +350,8 @@ public class View
         gridRight.add(txtAppointmentNote, 1, 14); 
         gridRight.add(btnAppointmentNew, 0, 15); 
         gridRight.add(btnAppointmentModify, 1, 15); 
+        gridRight.add(btnAppointmentSave, 0, 16); 
+        gridRight.add(btnAppointmentCancel, 1, 16); 
         
         gridRoot = new GridPane();
         gridRoot.setAlignment(Pos.TOP_LEFT);
