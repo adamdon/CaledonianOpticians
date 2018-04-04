@@ -78,19 +78,24 @@ public class Controller
     
     public void handleBtnAppointmentSave()
     {
-        if(isAppointmentModifyModeActive == true)
+        if(isAppointmentDetailsValid() == true)
         {
-            setElementOfAppointmentsArray(getAppointmentFromDetails(), getAllAppointmentsElement());
-        }
-        else if(isAppointmentModifyModeActive == false)
-        {
-            addElementOfAppointmentsArray(getAppointmentFromDetails());
+           if(isAppointmentModifyModeActive == true)
+           {
+               setElementOfAppointmentsArray(getAppointmentFromDetails(), getAllAppointmentsElement());
+           }
+           else if(isAppointmentModifyModeActive == false)
+           {
+               addElementOfAppointmentsArray(getAppointmentFromDetails());
+           }
+
+           DataInterface.writeAppointmentDatabaseToDisk(allAppointments);
+           handleBtnSearch();
+           appointmentDetailsMakeNonEditable();
+           updateStatusBar("Appointment Saved");           
         }
         
-        DataInterface.writeAppointmentDatabaseToDisk(allAppointments);
-        handleBtnSearch();
-        appointmentDetailsMakeNonEditable();
-        updateStatusBar("Appointment Saved");
+
     }
     
     public void handleBtnAppointmentCancel()
@@ -98,6 +103,28 @@ public class Controller
         clearAppointmentDetails();
         appointmentDetailsMakeNonEditable();
         updateStatusBar("...");
+    }
+    
+    
+    public boolean isAppointmentDetailsValid()
+    {
+        if(view.txtAppointmentRef.getText().equals("")
+         | view.txtApointmentUserRef.getText().equals("")
+         | view.txtAppointmentOptician.getText().equals("")
+         | view.txtAppointmentTime.getText().equals("")  
+         | view.txtAppointmentType.getText().equals("")
+         | view.txtAppointmentNote.getText().equals(""))
+        {
+            updateStatusBar("All details not inputed, update and save again");
+            return false;
+        }
+        else if (isNumeric(view.txtApointmentUserRef.getText()) == false)
+        {
+            updateStatusBar("Reference number can only contain 0-9");
+            return false;
+        }
+        
+        return true;
     }
     
     public int getAllAppointmentsElement()
@@ -250,19 +277,23 @@ public class Controller
     
     public void handleBtnUserSave()
     {
-        if(isUserModifyModeActive == true)
+        if(isUserDetailsValid() == true)
         {
-            setElementOfUsersArray(getUserFromDetails(), getAllUsersElement());
+            if(isUserModifyModeActive == true)
+            {
+                setElementOfUsersArray(getUserFromDetails(), getAllUsersElement());
+            }
+            else if(isUserModifyModeActive == false)
+            {
+                addElementOfUsersArray(getUserFromDetails());
+            }
+
+            DataInterface.writeUserDatabaseToDisk(allUsers);
+            handleBtnSearch();
+            userDetailsMakeNonEditable();
+            updateStatusBar("User Saved");            
         }
-        else if(isUserModifyModeActive == false)
-        {
-            addElementOfUsersArray(getUserFromDetails());
-        }
-        
-        DataInterface.writeUserDatabaseToDisk(allUsers);
-        handleBtnSearch();
-        userDetailsMakeNonEditable();
-        updateStatusBar("User Saved");
+
     }
     
     public void handleBtnUserCancel()
@@ -270,6 +301,25 @@ public class Controller
         clearUserDetails();
         userDetailsMakeNonEditable();
         updateStatusBar("...");
+    }
+    
+    public boolean isUserDetailsValid()
+    {
+        if(view.txtUserFirstName.getText().equals("")
+         | view.txtUserLastName.getText().equals("")
+         | view.txtUserRefNumber.getText().equals("")
+         | view.txtUserAddress.getText().equals(""))       
+        {
+            updateStatusBar("All details not inputed, update and save again");
+            return false;
+        }
+        else if (isNumeric(view.txtUserRefNumber.getText()) == false)
+        {
+            updateStatusBar("Reference number can only contain 0-9");
+            return false;
+        }
+        
+        return true;
     }
     
     public int getAllUsersElement()
@@ -565,4 +615,18 @@ public class Controller
         updateStatusBar("Appointment selected");
     }
     
+    public boolean isNumeric(String strIsNumber)  
+    {
+        try
+        {
+            Integer ingIsNumber = Integer.parseInt(strIsNumber);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        
+        return true;        
+    }
+
 }
