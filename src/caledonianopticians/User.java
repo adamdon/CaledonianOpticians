@@ -1,6 +1,6 @@
 package caledonianopticians;
 
-public class User 
+public class User implements java.io.Serializable
 {
     private String srtFirstName;
     private String srtLastName;

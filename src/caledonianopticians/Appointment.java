@@ -1,6 +1,6 @@
 package caledonianopticians;
 
-public class Appointment 
+public class Appointment implements java.io.Serializable
 {
     private int intAppointmentRef;
     private int intAttendingPatient;

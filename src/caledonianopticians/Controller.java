@@ -1,15 +1,10 @@
 package caledonianopticians;
 
-import java.util.Scanner;
-import javafx.animation.Animation;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
 
@@ -25,7 +20,11 @@ public class Controller
 
     public Controller() 
     {
+        
+       DataInterface.setupUserDatabase();
+       DataInterface.setupAppointmentDatabase();
        view = new View();
+       
        
        allUsers = getUser();
        allAppointments = getAppointment();
@@ -88,6 +87,7 @@ public class Controller
             addElementOfAppointmentsArray(getAppointmentFromDetails());
         }
         
+        DataInterface.writeAppointmentDatabaseToDisk(allAppointments);
         handleBtnSearch();
         appointmentDetailsMakeNonEditable();
         updateStatusBar("Appointment Saved");
@@ -259,6 +259,7 @@ public class Controller
             addElementOfUsersArray(getUserFromDetails());
         }
         
+        DataInterface.writeUserDatabaseToDisk(allUsers);
         handleBtnSearch();
         userDetailsMakeNonEditable();
         updateStatusBar("User Saved");
@@ -500,13 +501,13 @@ public class Controller
     }
     
 
-    public void updateUsersTable(ObservableList<User> updatedUsers)
+    public final void updateUsersTable(ObservableList<User> updatedUsers)
     {
         displayedUsers = updatedUsers;
         view.tabUserTable.setItems(displayedUsers);
     }
     
-    public void updateAppointmentsTable(ObservableList<Appointment> updatedAppointments)
+    public final void updateAppointmentsTable(ObservableList<Appointment> updatedAppointments)
     {
         displayedAppointments = updatedAppointments;
         view.tabAppointmentTable.setItems(displayedAppointments);
@@ -529,43 +530,19 @@ public class Controller
     {       
         return view.getScene();
     }
-    public ObservableList<User> getUser()
+    public final ObservableList<User> getUser()
     {
         allUsers = FXCollections.observableArrayList();
-        allUsers.add(new User("Homer", "Simpson", 100001, "24, new Road"));
-        allUsers.add(new User("Ned", "Flanders", 100002, "25, new Road"));
-        allUsers.add(new User("Troy", "McClure", 100003, "26, new Road"));
-        allUsers.add(new User("Ralph", "Wiggum", 100004, "27, new Road"));
-        allUsers.add(new User("Kent", "Brockman", 100005, "28, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100006, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100007, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100008, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100009, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100010, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100011, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100012, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100013, "29, new Road"));
-        allUsers.add(new User("Fat", "Tony", 100014, "29, new Road"));
+        allUsers = DataInterface.readUserDatabaseFromDisk();
+
         return allUsers;
     }
     
-    public ObservableList<Appointment> getAppointment()
+    public final ObservableList<Appointment> getAppointment()
     {
         allAppointments = FXCollections.observableArrayList();
-        allAppointments.add(new Appointment(200001, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "sore eyes", "Note 1"));
-        allAppointments.add(new Appointment(200002, 100002, "Dr Julian Bashir", "25.04.18 - 0930", "squinty eyes", "Note 1"));
-        allAppointments.add(new Appointment(200003, 100002, "Dr Leonard McCoy", "30.04.18 - 1430", "eyes too small", "Note 1"));
-        allAppointments.add(new Appointment(200004, 100004, "Dr Julian Bashir", "30.04.18 - 1430", "broken left eye", "Note 1"));
-        allAppointments.add(new Appointment(200005, 100005, "Dr Beverly Crusher", "30.04.18 - 1430", "pink eye", "Note 1"));
-        allAppointments.add(new Appointment(200006, 100005, "Dr Doctor Phlox", "30.04.18 - 1430", "dead eye", "Note 1"));
-        allAppointments.add(new Appointment(200007, 100005, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200008, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200009, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200010, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200011, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200012, 100001, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200013, 100009, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
-        allAppointments.add(new Appointment(200014, 100004, "Dr The Doctor", "30.04.18 - 1430", "gone blind", "Note 1"));
+        allAppointments = DataInterface.readAppointmentDatabaseFromDisk();
+
         return allAppointments;
     }  
     
