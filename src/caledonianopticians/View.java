@@ -1,20 +1,19 @@
+/**
+ * @author adamdon <adamdon89@gmail.com>
+ */
 package caledonianopticians;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableColumn;
@@ -23,10 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
-/**
- *
- * @author admin
- */
+
 public class View
 {
     Scene scene;
@@ -99,14 +95,16 @@ public class View
     {       
         setupNodes();
         setupLayout();   
-        scene = new Scene(gridRoot, 1280, 650);
+        scene = new Scene(gridRoot, 1280, 650); //adds GridPand to Scene
     }
 
+    //retuns the current scene
     public Scene getScene()
     {       
         return scene;
     }
-      
+    
+    //instantiates all on screen nodes
     public void setupNodes()
     {
         btnUserNew = new Button();
@@ -223,6 +221,7 @@ public class View
         //imageView code for GCU logo
         try {fisImageStream = new FileInputStream("img/gculogo.png");}
         catch (FileNotFoundException ex) {Logger.getLogger(CaledonianOpticians.class.getName()).log(Level.SEVERE, null, ex);}
+        //imgGcuLogo = new Image(getClass().getResourceAsStream("gculogo.png"));
         imgGcuLogo = new Image(fisImageStream);
         imvGcuLogo = new ImageView();
         imvGcuLogo.setImage(imgGcuLogo);
@@ -281,7 +280,8 @@ public class View
         tabAppointmentTable.setMaxSize(850, 275);
         tabAppointmentTable.setMinSize(850, 275);
     }
-        
+    
+    //add all notes to gridPane   
     public void setupLayout()
     {
         gridTop = new GridPane();

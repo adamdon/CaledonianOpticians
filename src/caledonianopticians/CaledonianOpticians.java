@@ -1,3 +1,7 @@
+/**
+ * @author adamdon <adamdon89@gmail.com>
+ */
+
 package caledonianopticians;
 
 import java.io.FileInputStream;
@@ -5,9 +9,7 @@ import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-/**
- * @author adamdon <adamdon89@gmail.com>
- */
+
 public class CaledonianOpticians extends Application
 {
     Controller controller;
@@ -27,7 +29,7 @@ public class CaledonianOpticians extends Application
         
         FileInputStream fisIconStream = new FileInputStream("img/gcuicon.png");
         Image imgGcuIcon = new Image(fisIconStream);
-        primaryStage.getIcons().add(imgGcuIcon);
+        primaryStage.getIcons().add(imgGcuIcon); //sets stage icon for OS
         
         primaryStage.show();
     }   

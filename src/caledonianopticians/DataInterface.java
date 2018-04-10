@@ -1,3 +1,7 @@
+/**
+ * @author adamdon <adamdon89@gmail.com>
+ */
+
 package caledonianopticians;
 
 import java.io.File;
@@ -18,7 +22,7 @@ public class DataInterface
 
     }
     
-    
+    //checks if User database present and if not creates one 
     public static void setupUserDatabase()
     {
         if(isUserDatabasePresent() == true)
@@ -33,6 +37,7 @@ public class DataInterface
         }
     }
     
+    //checks if Appointment database present and if not creates one 
     public static void setupAppointmentDatabase()
     {
         if(isAppointmentDatabasePresent() == true)
@@ -47,13 +52,14 @@ public class DataInterface
         }
     }
     
+    //Writes an Users Array to disk
     public static void writeUserDatabaseToDisk(ObservableList<User> toBeWrittenUsers)
     {
         try
         {
             ArrayList<User> toBeWrittenArrayListUsers = new ArrayList(toBeWrittenUsers);
 
-            FileOutputStream fosUserDatabase = new FileOutputStream("db/userDatabase.db");
+            FileOutputStream fosUserDatabase = new FileOutputStream("userDatabase.db");
             ObjectOutputStream oosUserDatabase = new ObjectOutputStream(fosUserDatabase);
 
             oosUserDatabase.writeObject(toBeWrittenArrayListUsers);
@@ -67,13 +73,14 @@ public class DataInterface
    
     }
     
+    //Writes an Appointments Array to disk
     public static void writeAppointmentDatabaseToDisk(ObservableList<Appointment> toBeWrittenAppointments)
     {
         try
         {
             ArrayList<Appointment> toBeWrittenArrayListAppointments= new ArrayList(toBeWrittenAppointments);
 
-            FileOutputStream fosAppointmentDatabase = new FileOutputStream("db/appointmentDatabase.db");
+            FileOutputStream fosAppointmentDatabase = new FileOutputStream("appointmentDatabase.db");
             ObjectOutputStream oosAppointmentDatabase = new ObjectOutputStream(fosAppointmentDatabase);
 
             oosAppointmentDatabase.writeObject(toBeWrittenArrayListAppointments);
@@ -87,7 +94,7 @@ public class DataInterface
    
     }
     
-    
+    //Reads an User Array to from disk
     public static ObservableList<User> readUserDatabaseFromDisk()
     {
         FileInputStream fisUserDatabase = null;
@@ -97,7 +104,7 @@ public class DataInterface
         
         try
         {
-            fisUserDatabase = new FileInputStream("db/userDatabase.db");
+            fisUserDatabase = new FileInputStream("userDatabase.db");
             oisUserDatabase = new ObjectInputStream(fisUserDatabase); 
             readListUsers = (List<User>)oisUserDatabase.readObject();
             oisUserDatabase.close();
@@ -111,6 +118,7 @@ public class DataInterface
         return readObListUsers;
     }
     
+    //Reads an Appointments Array to from disk
     public static ObservableList<Appointment> readAppointmentDatabaseFromDisk()
     {
         FileInputStream fisAppointmentDatabase = null;
@@ -120,7 +128,7 @@ public class DataInterface
         
         try
         {
-            fisAppointmentDatabase = new FileInputStream("db/appointmentDatabase.db");
+            fisAppointmentDatabase = new FileInputStream("appointmentDatabase.db");
             oisAppointmentDatabase = new ObjectInputStream(fisAppointmentDatabase); 
             readListAppointments = (List<Appointment>)oisAppointmentDatabase.readObject();
             oisAppointmentDatabase.close();
@@ -134,9 +142,10 @@ public class DataInterface
         return readObListAppointments;
     }
     
+    //checks if a UserDataBase is present
     public static boolean isUserDatabasePresent()
     {
-        File userDatabaseFile = new File("db/userDatabase.db");
+        File userDatabaseFile = new File("userDatabase.db");
         boolean isPresent = false; 
         
         if(userDatabaseFile.isFile() == true)
@@ -147,9 +156,10 @@ public class DataInterface
         return isPresent;
     }
     
+    //checks if a Appointment DataBase is present
     public static boolean isAppointmentDatabasePresent()
     {
-        File appointmentDatabaseFile = new File("db/appointmentDatabase.db");
+        File appointmentDatabaseFile = new File("appointmentDatabase.db");
         boolean isPresent = false; 
         
         if(appointmentDatabaseFile.isFile() == true)
@@ -160,7 +170,7 @@ public class DataInterface
         return isPresent;
     }
        
-    
+    //Makes then returns a Users Array from set of defult values   
     public static ObservableList<User> getDefaultUsers()
     {
         ObservableList<User> defaultUsers = FXCollections.observableArrayList();
@@ -181,6 +191,8 @@ public class DataInterface
         return defaultUsers;
     }
     
+    
+    //Makes then returns a Appointment Array from set of defult values   
     public static ObservableList<Appointment> getDefaultAppointments()
     {
         ObservableList<Appointment> defaultAppointments = FXCollections.observableArrayList();

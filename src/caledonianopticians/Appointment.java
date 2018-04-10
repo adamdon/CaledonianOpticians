@@ -1,3 +1,7 @@
+/**
+ * @author adamdon <adamdon89@gmail.com>
+ */
+
 package caledonianopticians;
 
 public class Appointment implements java.io.Serializable

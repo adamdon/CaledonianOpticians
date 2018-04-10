@@ -1,5 +1,8 @@
-package caledonianopticians;
+/**
+ * @author adamdon <adamdon89@gmail.com>
+ */
 
+package caledonianopticians;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,28 +24,28 @@ public class Controller
     public Controller() 
     {
         
-       DataInterface.setupUserDatabase();
-       DataInterface.setupAppointmentDatabase();
-       view = new View();
+       DataInterface.setupUserDatabase(); //checks if User database present and if not creates one 
+       DataInterface.setupAppointmentDatabase(); //checks if Appointment database present and if not creates one 
+       view = new View(); // instantiates full UI with View Class 
        
        
-       allUsers = getUser();
-       allAppointments = getAppointment();
-       updateUsersTable(allUsers);
-       updateAppointmentsTable(allAppointments);
+       allUsers = getUser(); //gets all users Array
+       allAppointments = getAppointment(); //gets all Appointments Array
+       updateUsersTable(allUsers); //updates User Table view with all users
+       updateAppointmentsTable(allAppointments); //updates appontments Table with all appointments
        
-       view.btnSearch.setOnAction(e -> handleBtnSearch());
+       view.btnSearch.setOnAction(e -> handleBtnSearch()); //Event handler for search button
        view.txtSearchTextField.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) { handleBtnSearch(); } });
        
-       view.btnUserModify.setOnAction(e -> handleBtnUserModify());
-       view.btnUserNew.setOnAction(e -> handleBtnUserRegister());
-       view.btnUserSave.setOnAction(e -> handleBtnUserSave());
-       view.btnUserCancel.setOnAction(e -> handleBtnUserCancel());
+       view.btnUserModify.setOnAction(e -> handleBtnUserModify()); //Event handler for User Modify button
+       view.btnUserNew.setOnAction(e -> handleBtnUserRegister()); //Event handler for User Register button
+       view.btnUserSave.setOnAction(e -> handleBtnUserSave()); //Event handler User Save button 
+       view.btnUserCancel.setOnAction(e -> handleBtnUserCancel()); //Event handler for User Cancel button
        
-       view.btnAppointmentModify.setOnAction(e -> handleBtnAppointmentModify());
-       view.btnAppointmentNew.setOnAction(e -> handleBtnAppointmentRegister());
-       view.btnAppointmentSave.setOnAction(e -> handleBtnAppointmentSave());
-       view.btnAppointmentCancel.setOnAction(e -> handleBtnAppointmentCancel());
+       view.btnAppointmentModify.setOnAction(e -> handleBtnAppointmentModify());  //Event handler for Appointment Modify button
+       view.btnAppointmentNew.setOnAction(e -> handleBtnAppointmentRegister()); //Event handler for Appointment Register button
+       view.btnAppointmentSave.setOnAction(e -> handleBtnAppointmentSave()); //Event handler Appointment Save button 
+       view.btnAppointmentCancel.setOnAction(e -> handleBtnAppointmentCancel()); //Event handler Appointment  Cancel button
        
        view.tabUserTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionUserTable());
        view.tabAppointmentTable.getSelectionModel().selectedIndexProperty().addListener((num) -> handleListenerSelectionAppointmentTable());
@@ -52,21 +55,22 @@ public class Controller
 
     
     
-    
+    //handle for click of Appointment Modify button
     public void handleBtnAppointmentModify()
     {
         isAppointmentModifyModeActive = true;
-        if(view.txtAppointmentRef.getText().equals(""))
+        if(view.txtAppointmentRef.getText().equals(""))//check that text fields aren't black 
         {
             updateStatusBar("Select Appointment first");
         }
         else
         {
-            appointmentDetailsMakeEditable();
+            appointmentDetailsMakeEditable(); 
             updateStatusBar("Make Appointment changes then Save");
         } 
     }
     
+    //handle for click of Appointment Register button
     public void handleBtnAppointmentRegister()
     {
         isAppointmentModifyModeActive = false;
@@ -76,6 +80,7 @@ public class Controller
         updateStatusBar("Type all Appointment details then Save");
     }
     
+    //handle for click of Appointment Save button
     public void handleBtnAppointmentSave()
     {
         if(isAppointmentDetailsValid() == true)
@@ -98,6 +103,7 @@ public class Controller
 
     }
     
+    //handle for click of Appointment Cancel button
     public void handleBtnAppointmentCancel()
     {
         clearAppointmentDetails();
@@ -105,10 +111,10 @@ public class Controller
         updateStatusBar("...");
     }
     
-    
+    //input validation for Appointment Details 
     public boolean isAppointmentDetailsValid()
     {
-        if(view.txtAppointmentRef.getText().equals("")
+        if(view.txtAppointmentRef.getText().equals("") //makes sure there isn't any blank fields
          | view.txtApointmentUserRef.getText().equals("")
          | view.txtAppointmentOptician.getText().equals("")
          | view.txtAppointmentTime.getText().equals("")  
@@ -118,15 +124,17 @@ public class Controller
             updateStatusBar("All details not inputed, update and save again");
             return false;
         }
-        else if (isNumeric(view.txtApointmentUserRef.getText()) == false)
+        else if (isNumeric(view.txtApointmentUserRef.getText()) == false) //makes sure User Ref is a number
         {
             updateStatusBar("Reference number can only contain 0-9");
             return false;
         }
         
-        return true;
+        return true; /// returns true only if above conditions are met 
     }
     
+    
+    //gets index of the Appointment Array for the record that is populated in the details field
     public int getAllAppointmentsElement()
     {
         Integer intAppointmentRefAppointmentDetils = Integer.parseInt(view.txtAppointmentRef.getText());
@@ -145,6 +153,8 @@ public class Controller
         return intElementOfAllAppointmentArray;
     }
     
+    
+    //Makes and returns an Appointment object from the details entered in the text fields  
     public Appointment getAppointmentFromDetails()
     {
         Appointment appointmentFromDetails = new Appointment();
@@ -158,17 +168,19 @@ public class Controller
         return appointmentFromDetails; 
     }
     
+    //updates the allAppointments Array with new object passed to method
     public void setElementOfAppointmentsArray(Appointment appointmentFromDetails, int intAppointmentTableindex)
     {
         allAppointments.set(intAppointmentTableindex, appointmentFromDetails);
     }
     
+    //adds a new Appointment Object to the allAppointments array
     public void addElementOfAppointmentsArray(Appointment appointmentFromDetails)
     {
         allAppointments.add(appointmentFromDetails);
     }
     
-    
+    //Makes all Appointment details text fields editable
     public void appointmentDetailsMakeEditable()
     {
         view.txtAppointmentRef.setEditable(true);
@@ -197,6 +209,8 @@ public class Controller
         view.btnAppointmentModify.setDisable(true);
     }
     
+    
+    //Makes all Appointment details text fields non-editable
     public void appointmentDetailsMakeNonEditable()
     {
         view.txtAppointmentRef.setEditable(false);
@@ -225,32 +239,7 @@ public class Controller
         view.btnAppointmentModify.setDisable(false);
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     //handle for click of User Modify button
     public void handleBtnUserModify()
     {
         isUserModifyModeActive = true;
@@ -266,6 +255,7 @@ public class Controller
         } 
     }
     
+    //handle for click of User Register button
     public void handleBtnUserRegister()
     {
         isUserModifyModeActive = false;
@@ -275,6 +265,7 @@ public class Controller
         updateStatusBar("Type all User details then Save");
     }
     
+    //handle for click of User Save button
     public void handleBtnUserSave()
     {
         if(isUserDetailsValid() == true)
@@ -296,6 +287,7 @@ public class Controller
 
     }
     
+     //handle for click of User Cancel button
     public void handleBtnUserCancel()
     {
         clearUserDetails();
@@ -303,6 +295,7 @@ public class Controller
         updateStatusBar("...");
     }
     
+    //input validation for User Details 
     public boolean isUserDetailsValid()
     {
         if(view.txtUserFirstName.getText().equals("")
@@ -322,6 +315,7 @@ public class Controller
         return true;
     }
     
+    //gets index of the User Array for the record that is populated in the details field
     public int getAllUsersElement()
     {
         Integer intUserRefUserDetils = Integer.parseInt(view.txtUserRefNumber.getText());
@@ -340,16 +334,20 @@ public class Controller
         return intElementOfAllUsersArray;
     }
     
+    //updates the allUsers Array with new object passed to method
     public void setElementOfUsersArray(User userFromDetails, int intUserTableindex)
     {
         allUsers.set(intUserTableindex, userFromDetails);
     }
     
+    //adds a new User Object to the allUsers array
     public void addElementOfUsersArray(User userFromDetails)
     {
         allUsers.add(userFromDetails);
     }
     
+    
+     //Makes and returns an User object from the details entered in the text fields
     public User getUserFromDetails()
     {
         User userFromDetails = new User();
@@ -360,7 +358,9 @@ public class Controller
         
         return userFromDetails; 
     }
-      
+     
+    
+    //Makes all User details text fields editable
     public void userDetailsMakeEditable()
     {
         view.txtUserFirstName.setEditable(true);
@@ -385,6 +385,7 @@ public class Controller
         view.btnAppointmentModify.setDisable(true);
     }
     
+    //Makes all User details text fields non-editable
     public void userDetailsMakeNonEditable()
     {
         view.txtUserFirstName.setEditable(false);
@@ -409,32 +410,34 @@ public class Controller
         view.btnAppointmentModify.setDisable(false);
     }
     
-    
+    //takes the inputed text from the search field and makes user is isn't empty
     public void searchUsersValidator(String srtPassedSearchTextField)
     {
-        ObservableList<User> validatedSearchedUsers = searchUsersAlgorithm(srtPassedSearchTextField);
+        ObservableList<User> validatedSearchedUsers = searchUsersAlgorithm(srtPassedSearchTextField); //returns searched Users 
         
-        if(srtPassedSearchTextField.equals("") || validatedSearchedUsers.isEmpty())
+        if(srtPassedSearchTextField.equals("") || validatedSearchedUsers.isEmpty()) //checking fields is empty or 
         {
-            updateUsersTable(allUsers);
-            updateAppointmentsTable(allAppointments);
-            clearAppointmentDetails();
-            clearUserDetails();
-            view.txtSearchTextField.selectAll();
+            updateUsersTable(allUsers); //updates table with all records 
+            updateAppointmentsTable(allAppointments); //updates table with all records 
+            clearAppointmentDetails(); // clears all Appointment text fields 
+            clearUserDetails(); // clears all Appointment text fields 
+            view.txtSearchTextField.selectAll(); //highlights all text in the search text field 
             updateStatusBar("No results found for " + srtPassedSearchTextField + " - All users displayed");
         }
         else
         {
-            updateUsersTable(validatedSearchedUsers);
-            populateUserDetails(getUserTableSelection());
-            searchAppointments(getUserTableSelection());
-            populateAppointmentDetails(getAppointmentTableSelection());
-            view.txtSearchTextField.selectAll();
+            updateUsersTable(validatedSearchedUsers); // Updated table with the searched users
+            populateUserDetails(getUserTableSelection()); //updates User details with selected index (defult 0)
+            searchAppointments(getUserTableSelection()); // Updated table with the searched Appointments
+            populateAppointmentDetails(getAppointmentTableSelection()); //updates Appointments details with selected index (defult 0)
+            view.txtSearchTextField.selectAll(); //highlights all text in the search text field
             updateStatusBar("Search results for " + srtPassedSearchTextField + " complete");
         }
  
     }
     
+    
+    //Takes the text from the Search text field then returns an Array of Users that match
     public ObservableList<User> searchUsersAlgorithm(String srtPassedSearchTextField)
     {
         ObservableList<User> searchedUsers = FXCollections.observableArrayList();
@@ -443,9 +446,9 @@ public class Controller
             String strFullName = identifier.getSrtFirstName() + " " + identifier.getSrtLastName();
             Integer ingIntergerRef = identifier.getIntReference(); // changing primitive data type int to Interger
 
-            if(identifier.getSrtFirstName().equalsIgnoreCase(srtPassedSearchTextField))
+            if(identifier.getSrtFirstName().equalsIgnoreCase(srtPassedSearchTextField)) //checks for match
             {
-                searchedUsers.add(identifier);
+                searchedUsers.add(identifier); //addeds User to Array of Users if true
             }
             else if(identifier.getSrtLastName().equalsIgnoreCase(srtPassedSearchTextField))
             {
@@ -463,6 +466,7 @@ public class Controller
         return searchedUsers;
     }
     
+    //Takes user table index, searches for the User Ref then updates Appointments table with results
     public void searchAppointments(int intUserTableindex)
     {
         ObservableList<Appointment> SearchedAppointments = FXCollections.observableArrayList();
@@ -472,15 +476,15 @@ public class Controller
         {
             Integer ingAppointmentPatient = identifier.getIntAttendingPatient();
             
-            if(ingAppointmentPatient.equals(intUserRefSelected))
+            if(ingAppointmentPatient.equals(intUserRefSelected)) //check to see if user ref matches
             {
-                SearchedAppointments.add(identifier);
+                SearchedAppointments.add(identifier); //adds Apponitment object to Array of appointments
             }
         }
-        updateAppointmentsTable(SearchedAppointments);       
+        updateAppointmentsTable(SearchedAppointments); //updates appointment table with resullts       
     }
     
-    
+    // Updates the User details text fields with the selected row in table
     public void populateUserDetails(int intUserTableindex)
     {
         Integer intUserRefSelected = displayedUsers.get(intUserTableindex).getIntReference();
@@ -491,6 +495,7 @@ public class Controller
         view.txtUserAddress.setText(displayedUsers.get(intUserTableindex).getSrtAddress()); 
     }
     
+    // Updates the Appointment details text fields with the selected row in table
     public void populateAppointmentDetails(int intAppointmentTableindex)
     {
         if(displayedAppointments.isEmpty())
@@ -511,6 +516,8 @@ public class Controller
         }
     }
     
+    
+    //sets all User details text fields to blank
     public void clearUserDetails()
     {
         view.txtUserFirstName.setText("");
@@ -519,6 +526,7 @@ public class Controller
         view.txtUserAddress.setText(""); 
     }
     
+    //sets all User details text fields to blank
     public void clearAppointmentDetails()
     {
         view.txtAppointmentRef.setText("");
@@ -529,7 +537,7 @@ public class Controller
         view.txtAppointmentNote.setText(""); 
     }
     
-
+    //returns the index of the selected row of the table 
     public int getUserTableSelection()
     {
         int intUserTableindex = 0;
@@ -540,6 +548,7 @@ public class Controller
         return  intUserTableindex;       
     }
     
+    //returns the index of the selected row of the table 
     public int getAppointmentTableSelection()
     {
         int intAppointmentTableindex = 0;
@@ -550,19 +559,22 @@ public class Controller
         return  intAppointmentTableindex;       
     }
     
-
+    //Updates User table with passed Array of Users
     public final void updateUsersTable(ObservableList<User> updatedUsers)
     {
         displayedUsers = updatedUsers;
         view.tabUserTable.setItems(displayedUsers);
     }
     
+    //Updates User table with passed Array of Users
     public final void updateAppointmentsTable(ObservableList<Appointment> updatedAppointments)
     {
         displayedAppointments = updatedAppointments;
         view.tabAppointmentTable.setItems(displayedAppointments);
     }
     
+    
+    //updates a lable used for status bar with passed text with flashing text
     public void updateStatusBar(String srtPassedText)
     {
         view.lblStatusBarText.setText(" " + srtPassedText);
@@ -575,11 +587,13 @@ public class Controller
         fadTransition.play();
     }
     
-    
+    //returns the scene from inside the View class
     public Scene getSceneFromView()
     {       
         return view.getScene();
     }
+    
+    //returns the User Array from the disk via DataInterface class
     public final ObservableList<User> getUser()
     {
         allUsers = FXCollections.observableArrayList();
@@ -588,6 +602,7 @@ public class Controller
         return allUsers;
     }
     
+    //returns the Appointment Array from the disk via DataInterface class
     public final ObservableList<Appointment> getAppointment()
     {
         allAppointments = FXCollections.observableArrayList();
@@ -596,11 +611,13 @@ public class Controller
         return allAppointments;
     }  
     
+     //handle for click of Search button
      public void handleBtnSearch()
     {
         searchUsersValidator(view.txtSearchTextField.getText());
     }
     
+     // //handle for Lister that checks what indext of User table is selected 
     public void handleListenerSelectionUserTable()
     {    
         searchAppointments(getUserTableSelection());
@@ -609,12 +626,15 @@ public class Controller
         updateStatusBar("User selected");
     }
     
+    // //handle for Lister that checks what indext of Appointment table is selected 
     public void handleListenerSelectionAppointmentTable()
     {    
         populateAppointmentDetails(getAppointmentTableSelection());
         updateStatusBar("Appointment selected");
     }
     
+    
+    //returns ture if passed text is a number
     public boolean isNumeric(String strIsNumber)  
     {
         try

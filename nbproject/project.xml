@@ -15,7 +15,9 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>CaledonianOpticians</name>
             <source-roots>
+                <root id="src.img.dir"/>
                 <root id="src.dir"/>
+                <root id="src.resources.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
