@@ -1,5 +1,5 @@
 /**
- * @author adamdon <adamdon89@gmail.com>
+ * @author adamdon <mail@adamdon.co.uk>
  */
 
 package caledonianopticians;
