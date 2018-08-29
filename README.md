@@ -5,7 +5,7 @@
  
 ![Screenshot of UI](https://adamdon.github.io/img/CaledonianOpticians_screenshot01.png)
 
-Developed by myself as part of a larger 1st year project to create an appointments management tool that could make, update, search and store bookings. I was given a lot of freedom in what language and tools to be used, so I decided learn JavaFX using onlne resources and omit the use of any scene builders as coding the GUI would give better contol. 
+Developed by myself as part of a larger 1st year project to create an appointments management tool that could make, update, search and store bookings. I was given a lot of freedom in what language and tools to be used, so I decided learn JavaFX using onlne resources and omit the use of any scene builders as coding the GUI would give more control. 
 
 The UI was coded with JavaFX nested gridpanes, the logic was implemented in the Controller class (using the Model–view–controller design) and the database utilised ObjectOutputStream with FileOutputStream to write the full array of objects to disk for persistence.
 
